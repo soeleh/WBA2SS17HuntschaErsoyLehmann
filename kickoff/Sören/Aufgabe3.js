@@ -3,7 +3,7 @@ var chalk=require('chalk');
 
 fs.readFile("staedte.json", function(err, data) {
 	var obj = JSON.parse(data);
-	obj.staedte.sort(function (a, b) {
+	obj.cities.sort(function (a, b) {
 		if (a.population < b.population) {
 			return 1;
 		}
