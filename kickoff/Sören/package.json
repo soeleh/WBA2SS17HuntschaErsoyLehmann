@@ -1,19 +1,11 @@
 {
-  "name": "soeren",
+  "name": "aufgaben1",
   "version": "1.0.0",
   "description": "wba2 kickoff aufgaben",
-  "main": "Aufgabe1.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/soeleh/WBA2SS17HuntschaErsoyLehmann.git"
   },
   "author": "Sören Lehmann",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/soeleh/WBA2SS17HuntschaErsoyLehmann/issues"
-  },
   "homepage": "https://github.com/soeleh/WBA2SS17HuntschaErsoyLehmann#readme"
 }
