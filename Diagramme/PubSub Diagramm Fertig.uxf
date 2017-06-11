@@ -83,19 +83,6 @@ a,c</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>570</x>
-      <y>700</y>
-      <w>210</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>Apis geben uns als Subscriber 
-Daten wir filtern diese 
-und leiten sie an den Publisher</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
     <id>UMLState</id>
     <coordinates>
       <x>530</x>
