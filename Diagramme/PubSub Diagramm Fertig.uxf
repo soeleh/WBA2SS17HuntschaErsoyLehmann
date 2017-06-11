@@ -4,184 +4,178 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>260</x>
-      <y>240</y>
-      <w>320</w>
-      <h>120</h>
+      <x>250</x>
+      <y>320</y>
+      <w>300</w>
+      <h>90</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;-
-a</panel_attributes>
-    <additional_attributes>300.0;100.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>60</x>
-      <y>330</y>
-      <w>210</w>
-      <h>60</h>
-    </coordinates>
-    <panel_attributes>
-Publisher 2
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>60</x>
-      <y>430</y>
-      <w>210</w>
-      <h>60</h>
-    </coordinates>
-    <panel_attributes>
-Publisher 3
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>950</x>
-      <y>230</y>
-      <w>210</w>
-      <h>60</h>
-    </coordinates>
-    <panel_attributes>
-Publisher 1(s1)
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>950</x>
-      <y>330</y>
-      <w>210</w>
-      <h>60</h>
-    </coordinates>
-    <panel_attributes>
-Publisher 2(s2)
-
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>60</x>
-      <y>220</y>
-      <w>210</w>
-      <h>60</h>
-    </coordinates>
-    <panel_attributes>
-Publisher 1
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>950</x>
-      <y>430</y>
-      <w>210</w>
-      <h>60</h>
-    </coordinates>
-    <panel_attributes>
-Publisher 3(s3)
-</panel_attributes>
-    <additional_attributes/>
+    <panel_attributes>a
+lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>280.0;70.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>260</x>
-      <y>340</y>
-      <w>320</w>
+      <x>250</x>
+      <y>400</y>
+      <w>300</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
 b</panel_attributes>
-    <additional_attributes>300.0;20.0;10.0;20.0</additional_attributes>
+    <additional_attributes>280.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>260</x>
-      <y>370</y>
-      <w>320</w>
-      <h>110</h>
+      <x>250</x>
+      <y>430</y>
+      <w>300</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
 c</panel_attributes>
-    <additional_attributes>300.0;10.0;10.0;90.0</additional_attributes>
+    <additional_attributes>280.0;10.0;10.0;70.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>690</x>
-      <y>250</y>
-      <w>280</w>
-      <h>110</h>
+      <x>700</x>
+      <y>360</y>
+      <w>240</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
-a</panel_attributes>
-    <additional_attributes>260.0;10.0;10.0;90.0</additional_attributes>
+a,b</panel_attributes>
+    <additional_attributes>220.0;10.0;10.0;40.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>690</x>
-      <y>340</y>
-      <w>280</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;-
-b,c</panel_attributes>
-    <additional_attributes>260.0;20.0;10.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>690</x>
-      <y>380</y>
-      <w>280</w>
-      <h>100</h>
+      <x>700</x>
+      <y>420</y>
+      <w>240</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
 a,c</panel_attributes>
-    <additional_attributes>260.0;80.0;10.0;10.0</additional_attributes>
+    <additional_attributes>220.0;30.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>470</x>
-      <y>60</y>
-      <w>210</w>
-      <h>90</h>
+      <x>410</x>
+      <y>120</y>
+      <w>410</w>
+      <h>130</h>
     </coordinates>
-    <panel_attributes>Topic Name | Subscriber
+    <panel_attributes>    Bezeichnung     |      Topic Name          |        Subscriber    
 --
-             a            |    S1,s3
+               a                 |     Standort                  |            S1,S2
 --
-             b            |    S2
+               b                 |     Liste der Wgs         |            S1
 --
-             c            |    S3,s3
-</panel_attributes>
+               c                 |     Ort von Locations   |            S2
+--
+               e                 |                                    |
+--
+               f                  |                                    |</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLNote</id>
+    <id>UMLClass</id>
     <coordinates>
-      <x>560</x>
-      <y>320</y>
-      <w>140</w>
+      <x>570</x>
+      <y>700</y>
+      <w>210</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Apis geben uns als Subscriber 
+Daten wir filtern diese 
+und leiten sie an den Publisher</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLState</id>
+    <coordinates>
+      <x>530</x>
+      <y>370</y>
+      <w>180</w>
       <h>90</h>
     </coordinates>
     <panel_attributes>
 
 Pub/Sub Server
-bg=white</panel_attributes>
+
+
+
+valign=top
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLDeployment</id>
+    <coordinates>
+      <x>920</x>
+      <y>320</y>
+      <w>140</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>
+Subscriber1(s1)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLDeployment</id>
+    <coordinates>
+      <x>920</x>
+      <y>420</y>
+      <w>140</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>
+Subscriber2(s2)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLDeployment</id>
+    <coordinates>
+      <x>120</x>
+      <y>290</y>
+      <w>140</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>
+Google Maps
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLDeployment</id>
+    <coordinates>
+      <x>120</x>
+      <y>470</y>
+      <w>140</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>
+Google Places
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLDeployment</id>
+    <coordinates>
+      <x>120</x>
+      <y>380</y>
+      <w>140</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>
+Anzeigen der WG
+</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>
