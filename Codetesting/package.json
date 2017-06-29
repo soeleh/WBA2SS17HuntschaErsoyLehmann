@@ -1,0 +1,19 @@
+{
+  "name": "codetesting",
+  "version": "1.0.0",
+  "description": "It's just a test why u heff to be mad",
+  "main": "mainApp.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/soeleh/wba2ss17huntschaersoylehmann"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3"
+  }
+}
