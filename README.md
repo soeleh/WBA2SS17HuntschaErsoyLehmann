@@ -4,27 +4,11 @@ Das Thema der Anwendung soll ein Wohngemeinschaftsverzeichnis sein. Benutzer kö
 
 Funktionsweise unserer App
 
-Unsere App arbeitet mit JSon-Dateien, in den unsere Anzeigen für die Filterung bereit stehen. Wir können diese Anzeigen bearbeiten, neue erstellen oder sie auch löschen. 
+Unsere App arbeitet mit JSon-Dateien, in den unsere Anzeigen für die Filterung bereit stehen. Wir als Dienstgeber können diese Anzeigen bearbeiten, neue erstellen oder sie auch löschen. Wir arbeiten mit den HTTP Methoden *POST* *GET* *PUT* und *DEL* sowie einigen HTTP Status Codes wie *200*,*400* oder *404* . 
 
 Features 
 
-**Filterung**:
-
-Die Filterung geschieht durch die HTTP Methode **GET**,diese Methode zeigt durch das Einstellen nach bestimmten Kritierien die zu passende Anzeige.
-
-Um die Suche zu spezifizieren haben wir einige Kritieren, wie z.b das eine Anzeige erst anzeigt wird wenn man eine spezielle Stadt eingeben hat oder auch nach der Raumanzahl um bestimmte Anzeigen zu bekommen.
-
-**Neue Anzeigen anlegen**:
-
-Das Anlegen einer neuen  Anzeige wird durch die Methode **POST** eingeführt. Diese Methode erzeugt ein neues Objekt mit den Atrributen: 
-
-*"id:","city:","rent:","renttype:","size:","roomqty:"*
-
-**Anzeige verändern**:
-
-Dieses Feature passiert durch die HTTP Methode **PUT**. 
-
-Diese Methode ermöglicht es das die bestehenenden Daten in unseren Anzeige verändert und auch übernommen werden. 
+Der Nutzer unserer App hat die Möglichkeit, durch das Eingrenzen von gewissen Kritierien seine Suche besser eingrenzen zu können und somit schneller seine Wohnung zu finden oder um erstmal eine bessere Übersicht über seine Region mit verfügbaren Wohnungen zu erhalten. 
 
 
 **Guide für die Instaltion von Node.js und Redis.io**
