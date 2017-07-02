@@ -9,7 +9,7 @@ Unsere App arbeitet mit JSon-Dateien, in den unsere Anzeigen für die Fliterung 
 Features 
 
 Filterung:
-Die Filterung geschieht durch die HTTP Methode GET, um die Suche zu spezifizieren haben wir einige Kritieren, wie z.b das eine Anzeige erst anzeigt wird wenn man eine speziellen Stadt eingeben hat oder auch nach der Raumanzahl um bestimmte Anzeigen zu bekommen.
+Die Filterung geschieht durch die HTTP Methode GET, wo dort die Anzeigen mit den Kritieren anzeigt werden. Um die Suche zu spezifizieren haben wir einige Kritieren, wie z.b das eine Anzeige erst anzeigt wird wenn man eine speziellen Stadt eingeben hat oder auch nach der Raumanzahl um bestimmte Anzeigen zu bekommen.
 
 Neue Anzeigen anlegen:
 
