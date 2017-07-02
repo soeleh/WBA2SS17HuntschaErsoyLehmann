@@ -10,19 +10,21 @@ Features
 
 **Filterung**:
 
-Die Filterung geschieht durch die HTTP Methode GET,diese Methode zeigt durch das Einstellen nach bestimmten Kritierien die zu passende Anzeige.
+Die Filterung geschieht durch die HTTP Methode **GET**,diese Methode zeigt durch das Einstellen nach bestimmten Kritierien die zu passende Anzeige.
 
-Um die Suche zu spezifizieren haben wir einige Kritieren, wie z.b das eine Anzeige erst anzeigt wird wenn man eine speziellen Stadt eingeben hat oder auch nach der Raumanzahl um bestimmte Anzeigen zu bekommen.
+Um die Suche zu spezifizieren haben wir einige Kritieren, wie z.b das eine Anzeige erst anzeigt wird wenn man eine spezielle Stadt eingeben hat oder auch nach der Raumanzahl um bestimmte Anzeigen zu bekommen.
 
 **Neue Anzeigen anlegen**:
 
-Das Anlegen einer neuen  Anzeige wird durch die Methode POST eingeführt. Diese Methode erzeugt ein neues Objekt mit den Atrributen: 
+Das Anlegen einer neuen  Anzeige wird durch die Methode **POST** eingeführt. Diese Methode erzeugt ein neues Objekt mit den Atrributen: 
 
 *"id:","city:","rent:","renttype:","size:","roomqty:"*
 
 **Anzeige verändern**:
 
-Dieses Feature passiert durch die HTTP Methode PUT. Diese Methode ermöglicht es das die bestehenenden Daten in unseren Anzeige verändert und auch übernommen werden. 
+Dieses Feature passiert durch die HTTP Methode **PUT**. 
+
+Diese Methode ermöglicht es das die bestehenenden Daten in unseren Anzeige verändert und auch übernommen werden. 
 
 
 **Guide für die Instaltion von Node.js und Redis.io**
@@ -39,19 +41,19 @@ dort sind ZIP Datei zum Download die dann entpackt werden können.
 
 Um diese Werkzeuge nutzen zu können muss folgendes beachtet werden: 
 
-Bei Node.js muss über die Commandozeile der Befehl "npm-install" durch geführt werden um alle nötigen Module für node.js zu installieren. 
+Bei Node.js muss über die Commandozeile der Befehl *"npm-install"* durch geführt werden um alle nötigen Module für node.js zu installieren. 
 
-Man sollte bei der Redis Installtion beachten das Redis global instaliert sein also bei der Installtion den Haken bei "Add the Redi folder to the PATH Enviroment" setzen!
+Man sollte bei der Redis Installtion beachten das Redis global instaliert sein also bei der Installtion den Haken bei *"Add the Redi folder to the PATH Enviroment"* setzen!
 
 
 **Klonen eines Repositorys**
 
 Das Klonen eines Respositorys geht über 2 Wege: 
-Einmal über die Git Hub Seite wo man auf den Button "Clone or Download" klickt,diese Option bietet einem die Möglichkeit entweder sich eine ZIP zum Repository runterladen oder das Repository lokal auf seinen Rechner zu clonen.
+Einmal über die Git Hub Seite wo man auf den Button *"Clone or Download"* klickt,diese Option bietet einem die Möglichkeit entweder sich eine ZIP zum Repository runterladen oder das Repository lokal auf seinen Rechner zu clonen.
 
-**Um es clonen zu können wird die Desktop App von Git benötigt.**
+**Um es clonen zu können wird die Desktop App von Git benötigt!**
 
-Alternativ kann mit der Shell von GIT sich das gewünschte Repository einfach mit dem Befehl "git clone" über die URL die auch bei dem Button "Clone or Download" drin steht, einfach klonen lassen.  
+Alternativ kann mit der Shell von GIT sich das gewünschte Repository einfach mit dem Befehl *"git clone"* über die URL die auch bei dem Button *"Clone or Download"* drin steht, einfach klonen lassen.  
 
 
 
