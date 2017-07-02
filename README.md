@@ -16,7 +16,9 @@ Um die Suche zu spezifizieren haben wir einige Kritieren, wie z.b das eine Anzei
 
 **Neue Anzeigen anlegen**:
 
-Das Anlegen einer neuen  Anzeige wird durch die Methode POST eingeführt. Diese Methode erzeugt ein neues Objekt mit den Atrributen: "id:","city:","rent:","renttype:","size:","roomqty:".
+Das Anlegen einer neuen  Anzeige wird durch die Methode POST eingeführt. Diese Methode erzeugt ein neues Objekt mit den Atrributen: 
+
+*"id:","city:","rent:","renttype:","size:","roomqty:"*
 
 **Anzeige verändern**:
 
@@ -45,7 +47,7 @@ Man sollte bei der Redis Installtion beachten das Redis global instaliert sein a
 **Klonen eines Repositorys**
 
 Das Klonen eines Respositorys geht über 2 Wege: 
-Einmal über die Git Hub Seite wo man auf den Button "Clone or Download" klickt, diese Option bietet einem die Möglichkeit entweder sich eine ZIP zum Repository runterladen oder das Repository lokal auf seinen Rechner zu clonen.
+Einmal über die Git Hub Seite wo man auf den Button "Clone or Download" klickt,diese Option bietet einem die Möglichkeit entweder sich eine ZIP zum Repository runterladen oder das Repository lokal auf seinen Rechner zu clonen.
 
 **Um es clonen zu können wird die Desktop App von Git benötigt.**
 
