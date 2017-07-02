@@ -33,7 +33,7 @@ https://redis.io
 
 https://github.com/MSOpenTech/redis/releases (Für Windows User)
 
-dort sind ZIP Datei zum download die dann entpackt werden können.
+dort sind ZIP Datei zum Download die dann entpackt werden können.
 
 Um diese Werkzeuge nutzen zu können muss folgendes beachtet werden: Bei Node.js muss über die Commandozeile der Befehl "npm-install" durch geführt werden um alle nötigen Module für node.js zu installieren. 
 
@@ -43,8 +43,9 @@ Man sollte bei der Redis Installtion beachten das Redis global instaliert sein a
 Klonen eines Repositorys
 
 Das Klonen eines Respositorys geht über 2 Wege: 
-Einmal über die Git Hub Seite wo man auf den Button "Clone or Download" klickt, diese Option bietet einem die Möglichkeit entweder sich eine ZIP zum Repository runterladen oder das Repository lokal auf seinen Rechner zu clonen.Um es clonen zu können wird die Desktop App von Git benötigt.
+Einmal über die Git Hub Seite wo man auf den Button "Clone or Download" klickt, diese Option bietet einem die Möglichkeit entweder sich eine ZIP zum Repository runterladen oder das Repository lokal auf seinen Rechner zu clonen.
 
+Um es clonen zu können wird die Desktop App von Git benötigt.
 
 Alternativ kann mit der Shell von GIT sich das gewünschte Repository einfach mit dem Befehl "git clone" über die URL die auch bei dem Button "Clone or Download" drin steht, einfach klonen lassen.  
 
