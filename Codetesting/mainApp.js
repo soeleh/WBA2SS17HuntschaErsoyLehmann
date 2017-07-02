@@ -195,7 +195,50 @@ app.get('/offers/city/:city/renttype/:renttype', function (req, res) {
 	}
 });
 //Filter the City and Rent Type by Rent Amount
-//app.get('/offers/city/:city/renttype/:renttype/rent/:rent', function (req, res) {
+app.get('/offers/city/:city/renttype/:renttype/rent/:rent', function (req, res) {
+var city = req.params.city;
+	
+	var filteredData = citytesting.filter(function(value, index, arr){
+		return value.city == city;
+	});
+    
+    if(filteredData.length >= 1){
+			var rent = req.params.rent;
+
+			var aFilteredData = citytesting.filter(function(value, index, arr){
+				if( value.city == city && value.renttype == renttype){
+					return value.city == city;
+					return value.renttype == renttype;
+				}
+			});
+	
+			if(aFilteredData.length >= 1){
+				res.status(200).json(aFilteredData);	
+			}
+			else{
+				 var message = {
+		                "error": {
+		                    "message": "Keine Anzeigen in " + req.params.city + " mit der Miete " + req.params.rent + " gefunden!"
+		                }
+		            }
+		            res.status(404).json(message);	
+			}
+	}
+	else{
+		 var message = {
+                "error": {
+                    "message": "Keine Anzeigen in " + req.params.city + " gefunden!"
+                }
+            }
+            res.status(404).json(message);	
+	}
+});
+
+
+
+
+
+
 
 //Add another ad
 //app.post('/offers', jsonParser, function(req, res){
