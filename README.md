@@ -18,8 +18,8 @@ Beachten: Redis sollte global installiert werden. Setzen Sie hierfür einen Hake
 
 **Guide**
 
-1. Starten Sie die Datenbank via Redis über den Befehl "redis-server" hinzu.
+1. Starten Sie die Datenbank via Redis über den Befehl "redis-server".
 
 2. Öffnen Sie im Ordner des Dienstgebers die Eingabeaufforderung und lassen Sie den Server über den Befehl "node app.js" laufen. (das Fenster weiterhin geöffnet lassen)
 
-3. Rufen Sie die Seite localhost:1337/testdata im Browser auf, um die Testdatensätze zu laden.
+3. Rufen Sie die Seite localhost:1337/testdata im Browser auf um die Testdatensätze zu laden.
