@@ -150,7 +150,7 @@ module.exports = {
                         var message = {
                             "success": {
                                 "message": "Offer found!",
-                                "book": rep
+                                "offer": rep
                             },
                             "error": false
                         }
@@ -222,7 +222,7 @@ module.exports = {
                                 var message = {
                                     "success": {
                                         "message": "Successfully updated!",
-                                        "updatedBook": updatedOffer
+                                        "updatedOffer": updatedOffer
                                     },
                                     "error": false
                                 }
