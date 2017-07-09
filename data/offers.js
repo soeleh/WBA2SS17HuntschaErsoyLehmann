@@ -60,7 +60,7 @@ module.exports = {
                     var message = {
                         "success": false,
                         "error": {
-                            "message": "Kein Body Text angegeben!"
+                            "message": "Missing body text!"
                         }
                     }
                     return res.status(400).json(message);
