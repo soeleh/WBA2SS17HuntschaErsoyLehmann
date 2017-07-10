@@ -19,7 +19,7 @@ module.exports = {
                         return res.status(500).json(message);
                     }
 
-                    var offers = [];
+                    var newOffers = [];
 
                     if (rep.length == 0) {
                         res.json(offers);
@@ -41,7 +41,7 @@ module.exports = {
                         var message = {
                             "success": {
                                 "message": "Request success!",
-                                "offers": offers
+                                "offers": rep
                             },
                             "error": false
                         }
