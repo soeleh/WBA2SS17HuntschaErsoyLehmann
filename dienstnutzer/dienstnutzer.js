@@ -72,7 +72,12 @@ app.get('/', function (req, res) {
 
 app.post('/offers', function (req, res) {
 
-    if (req.body.name != null && req.body.name != "" && req.body.city != null && req.body.city != "") {
+    if (req.body.id 		!= null && req.body.id != "" 		&& 
+		req.body.city 		!= null && req.body.city != "" 		&& 
+		req.body.rent 		!= null && req.body.rent != "" 		&& 
+		req.body.renttype 	!= null && req.body.renttype != "" 	&& 
+		req.body.size		!= null && req.body.size != "" 		&& 
+		req.body.roomqty 	!= null && req.body.roomqty != "") {
 
         // New offers entry
 
@@ -273,8 +278,13 @@ app.delete('/offers/:id([0-9]+)', function (req, res) {
 
 app.put('/offers/:id([0-9]+)', function (req, res) {
 
-    if (req.body.name != null && req.body.name != "" && req.body.city != null && req.body.city != "") {
-
+    if (req.body.id 		!= null && req.body.id != "" 		&& 
+		req.body.city 		!= null && req.body.city != "" 		&& 
+		req.body.rent 		!= null && req.body.rent != "" 		&& 
+		req.body.renttype 	!= null && req.body.renttype != "" 	&& 
+		req.body.size		!= null && req.body.size != "" 		&& 
+		req.body.roomqty 	!= null && req.body.roomqty != "") {
+				
         var options = {
             host: 'localhost',
             port: 1337,
@@ -322,13 +332,13 @@ app.put('/offers/:id([0-9]+)', function (req, res) {
 
 app.get('/offers', function (req, res) {
 
-    var suchen = encodeURIComponent(req.query.suchen);
+    var search = encodeURIComponent(req.query.search);
 
-	if(req.query.suchen != null){
+	if(req.query.search != null){
 		var options = {
 			host: 'localhost',
 			port: '1337',
-			path: '/offers?suchen=' + suchen,
+			path: '/offers?search=' + search,
 			method: 'GET',
 			headers: {
 				accept: 'application/json'
