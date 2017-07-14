@@ -8,6 +8,7 @@ var ejs = require('ejs');
 var http = require('http');
 var cookieParser = require('cookie-parser');
 var async = require("async");
+var faye = require('faye');
 
 //"socket.io": "^1.4.5",
 var httpServer = require('http').Server(app);
@@ -54,6 +55,18 @@ io.on('connection', function(socket){
 });
 httpServer.listen(port);
 console.log("Listening on http://localhost:" + settings.port);
+
+//FAYE
+var fayeservice = new faye.NodeAdapter({
+	mount: '/mount'
+	timeout: 45
+});
+fayeservice.attach(http);
+//Serverside Client
+var client = new faye.client('http://localhost:'+ settings.port +'/faye');
+client.subscribe('/messages', function(message){
+	console.log('Got a new message: ' + message.text + '!');
+});
 
 /* * * * * * * *
  *   Homepage  *
