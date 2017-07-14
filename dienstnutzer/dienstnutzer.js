@@ -55,7 +55,7 @@ httpServer.listen(port);
 console.log("Listening on http://localhost:" + settings.port);
 
 /* * * * * * * *
- *  Startseite *
+ *   Homepage  *
  * * * * * * * */
 
 app.get('/', function (req, res) {
@@ -65,6 +65,117 @@ app.get('/', function (req, res) {
 });
 
 // Methodes
+
+/* * * * * * *
+ * Userarea  *
+ * * * * * * */
+
+app.get('/user', function (req, res) {
+
+    if (req.cookies.loggedin === 'true') {
+
+        async.waterfall([
+			// Get all Offers
+            function (callback) {
+
+                var options = {
+                    host: 'localhost',
+                    port: '1337',
+                    path: '/offers',
+                    method: 'GET',
+                    headers: {
+                        accept: 'application/json'
+                    }
+                }
+
+                var externalRequest = http.request(options, function (externalResponse) {
+                    externalResponse.on('data', function (chunk) {
+
+                        var offers = JSON.parse(chunk);
+
+                        callback(null, offers);
+                    });
+                });
+
+                externalRequest.end();
+
+            }],
+			// Main function: renders result
+            function (error, offers) { // 
+
+                var error = 0;
+                var success = 0;
+                var id = 0;
+
+                if (req.query.e != null) {
+                    error = req.query.e;
+                }
+
+                if (req.query.s != null && req.query.id != null) {
+                    success = req.query.s;
+                    id = req.query.id;
+                }else {
+                    var offer = [];
+                }
+
+                res.render('pages/user', {
+                    error: error,
+                    success: success,
+                    id: id,
+                    offers: offers.success.offers,
+                    offer: offer
+                });
+            }
+        ); 
+    }else {
+
+        res.redirect('user_login');
+    }
+});
+
+/* * * * * * * * *
+ *  User Login  *
+ * * * * * * * * */
+
+app.get('/user_login', function (req, res) {
+
+    if (req.query.passwort != null) {
+
+        var pw = req.query.passwort;
+
+        if (pw == "mypass") {
+
+            // Set Cookie
+            var cookieOptions = {
+                maxAge: 60 * 60 * 24 * 30 * 12, // one year
+                httpOnly: true
+            };
+            res.cookie('loggedin', 'true', cookieOptions);
+
+            // Zum user weiterleiten
+            res.redirect('user');
+
+        }else {
+            res.render('pages/user_login', {
+                falschespw: true
+            });
+        }
+    }else {
+        res.render('pages/user_login', {
+            falschespw: false
+        });
+    }
+});
+
+/* * * * * * * * *
+ *  User Logout  *
+ * * * * * * * * */
+
+app.get('/user_logout', function (req, res) {
+    
+	res.clearCookie('loggedin');
+    res.redirect('user_login');
+});
 
 /* * * * * * * * * * * * *
  *      Post offers      *
@@ -91,7 +202,6 @@ app.post('/offers', function (req, res) {
             }
         };
 
-//TODO Überhaupt notwendig?
         var externalRequest = http.request(options, function (externalResponse) {
 
             externalResponse.on('data', function (chunk) {
@@ -101,15 +211,12 @@ app.post('/offers', function (req, res) {
                 if (offerdata != null) {
 
                     if (offerdata.success != false) {
-                        res.redirect('adminbereich?s=1&id=' + offerdata.success.newoffer.id);
-                    }
-                    else {
-                        res.redirect('adminbereich?e=' + offerdata.error.message);
+                        res.redirect('user?s=1&id=' + offerdata.success.newoffer.id);
+                    }else {
+                        res.redirect('user?e=' + offerdata.error.message);
                     }
                 }
-
             });
-
         });
 
         externalRequest.write(JSON.stringify({
@@ -123,14 +230,9 @@ app.post('/offers', function (req, res) {
 
         externalRequest.end();
 
-    }
-    else {
-
+    }else {
         // Fehlermeldung ausgeben!
-
-//TODO
-        //res.redirect('adminbereich?e=4');
-
+        res.redirect('user?e=4');
     }
 
 })
@@ -156,7 +258,6 @@ app.get('/offers/:id([0-9]+)', function (req, res) {
                 }
             }
 
-//TODO
             var externalRequest = http.request(options, function (externalResponse) {
 
                 externalResponse.on('data', function (chunk) {
@@ -165,19 +266,13 @@ app.get('/offers/:id([0-9]+)', function (req, res) {
 
                     if (offerdata.success == false) {
                         var error = new Error("Offers Error:" + offerdata.error.message);
-                    }
-                    else {
+                    }else {
                         var error = null;
                     }
-
                     callback(error, offerdata);
-
                 });
-
             });
-
             externalRequest.end();
-
         },
 		// Get all offers
         function (offerdata, callback) { 
@@ -200,8 +295,7 @@ app.get('/offers/:id([0-9]+)', function (req, res) {
 
                     if (offers.success == false) {
                         var error = new Error("Offers Error:" + offers.error.message);
-                    }
-                    else {
+                    }else {
                         var error = null;
                     }
 
@@ -229,9 +323,7 @@ app.get('/offers/:id([0-9]+)', function (req, res) {
 
                 });
 
-            }
-            else {
-
+            }else {
                 res.render('pages/offers', {
 
                     offer: null,
@@ -239,14 +331,9 @@ app.get('/offers/:id([0-9]+)', function (req, res) {
                     error: error
 
                 });
-
             }
-
-            
-
         }
-    );
-    
+    ); 
 });
 
 /* * * * * * * * * * * *
@@ -294,7 +381,7 @@ app.put('/offers/:id([0-9]+)', function (req, res) {
                 'Content-Type': 'application/json'
             }
         };
-//TODO
+		
         var externalRequest = http.request(options, function (externalResponse) {
 
             externalResponse.on('data', function (chunk) {
@@ -302,7 +389,6 @@ app.put('/offers/:id([0-9]+)', function (req, res) {
                 res.json({ success: true });
 
             });
-
         });
 
         externalRequest.write(JSON.stringify({
@@ -316,12 +402,8 @@ app.put('/offers/:id([0-9]+)', function (req, res) {
         externalRequest.end();
     }
     else {
-
         // Fehlermeldung ausgeben!
-		
-		//TODO
-        //res.redirect('adminbereich?e=4');
-
+        res.redirect('user?e=4');
     }
 })
 
@@ -344,8 +426,7 @@ app.get('/offers', function (req, res) {
 				accept: 'application/json'
 			}
 		}
-	}
-	else{
+	}else{
 		var options = {
 			host: 'localhost',
 			port: '1337',
@@ -357,7 +438,6 @@ app.get('/offers', function (req, res) {
 		}
 	}
 
-//TODO
     var externalRequest = http.request(options, function (externalResponse) {
 
         externalResponse.on('data', function (chunk) {
@@ -366,7 +446,7 @@ app.get('/offers', function (req, res) {
 			
             res.render('pages/offers', {
 
-                buechereien: offerdata.success.offers
+                offers: offerdata.success.offers
 
             });
 
@@ -376,20 +456,19 @@ app.get('/offers', function (req, res) {
 
     externalRequest.end();
 
-
 });
 
-// Mainapp
+/* * * * * * *
+ *  Mainapp  *
+ * * * * * * */
 
 app.listen(settings.port, function () {
-
     console.log('');
     console.log('+++++++++++++++++++++++++++++');
-    console.log('+           WBsuche         +');
+    console.log('+           WGhilfe         +');
     console.log('+++++++++++++++++++++++++++++');
     console.log('');
-    console.log('Server iss running on Port '+settings.port+'!');
+    console.log('Server is running on Port '+settings.port+'!');
     console.log('');
     console.log('Open http://localhost:'+settings.port+' in your Browser!');
-
 });
