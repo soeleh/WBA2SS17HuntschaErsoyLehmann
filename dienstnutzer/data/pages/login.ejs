@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<html lang="de" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <% include ../elements/head.ejs %>
+	<title>WGhilfe - Login</title>
+</head>
+<body>
+    <header>
+        <% include ../elements/header.ejs %>
+    </header>
+    <main>
+		<div class="login">
+			<h2 class="login-header">Login</h2>
+			<form class="login-container" name="login" method="get">
+				<p><input type="password" placeholder="Password" name="passwort"></p>
+				<p><input type="submit" value="Log in"></p>
+				<%
+				if(falschespw == true){
+					%>
+					<p>Falsches Passwort eingegeben!</p>
+					<%
+				}
+				%>
+			</form>
+		</div>
+	</main>
+    <footer>
+        <% include ../elements/footer.ejs %>
+    </footer>
+</body>
+</html>

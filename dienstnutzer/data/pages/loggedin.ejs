@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html lang="de" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <% include ../elements/head.ejs %>
+	<title>WGhilfe - Nutzerbereich</title>
+	<script src="//code.jquery.com/jquery-latest.js"></script>
+
+	<script>
+		$(function() {
+			jQuery.each( [ "put", "delete" ], function( i, method ) {
+				jQuery[ method ] = function( url, data, callback, type ) {
+					if ( jQuery.isFunction( data ) ) {
+						type = type || callback;
+						callback = data;
+						data = undefined;
+					}
+			
+					return jQuery.ajax({
+						url: url,
+						type: method,
+						dataType: type,
+						data: data,
+						success: callback
+					});
+				};
+			});
+		});
+	</script>
+	<script>
+    	$(function() {
+			
+			$('.form-offedit').on('submit', function(e) {
+				e.preventDefault();
+				var id = $(this).data('offid');
+				
+				var city = $('input[id="offcity'+id+'"]').val(),
+					rent = $('input[id="offrent'+id+'"]').val(),
+					renttype = $('input[id="offrentt'+id+'"]').val(),
+					size = $('input[id="offsize'+id+'"]').val(),
+					roomqty = $('input[id="offrooms'+id+'"]').val(),
+
+				
+				$.put('/offers/' + id + '/', $(this).serialize(), function(resp) {
+					if (resp.success) {
+						document.location.href = 'nutzerbereich?s=4&id='+id;
+					}
+					else {
+						document.location.href = 'nutzerbereich?e=5';
+					}
+				});
+			});
+    	});
+    </script>
+</head>
+<body>
+    <header>
+        <% include ../elements/header.ejs %>
+    </header>
+    <div id"wrapper">
+	<main>
+		<div id="content">
+			<h1>Nutzerbereich</h1>
+			<%
+			if(error == 1){
+				%>
+				<div style="width: 100%; padding: 10px; background-color: red; border: 1px solid black;">
+					<p>Eintrag fehlgeschlagen! Bitte Stadtname, Miete, Mietart, Größe und Raumanzahl angeben!</p>
+				</div>
+				<%
+			}
+			else if(error == 2){
+				%>
+				<div style="width: 100%; padding: 10px; background-color: red; border: 1px solid black;">
+					<p>Speichern fehlgeschlagen! Bitte Stadtname, Miete, Mietart, Größe und Raumanzahl angeben!</p>
+				</div>
+				<%
+			}
+			else if(error == 3){
+				%>
+				<div style="width: 100%; padding: 10px; background-color: red; border: 1px solid black;">
+					<p>Speichern fehlgeschlagen!</p>
+				</div>
+				<%
+			}
+			else if(error != 0){
+				%>
+				<div style="width: 100%; padding: 10px; background-color: red; border: 1px solid black;">
+					<p><%= error %></p>
+				</div>
+				<%
+			}
+			else if(success == 1 && id != 0){
+				%>
+				<div style="width: 100%; padding: 10px; background-color: green; border: 1px solid black; color: white;">
+					<p>Anzeige mit der ID <%= id %> erfolgreich eingetragen!</p>
+				</div>
+				<%
+			}
+
+			else if(success == 2 && id != 0){
+				%>
+				<div style="width: 100%; padding: 10px; background-color: green; border: 1px solid black; color: white;">
+					<p>Anzeige mit der ID <%= id %> erfolgreich gelöscht!</p>
+				</div>
+				<%
+			}
+			else if(success == 3 && id != 0){
+				%>
+				<div style="width: 100%; padding: 10px; background-color: green; border: 1px solid black; color: white;">
+					<p>Anzeige mit der ID <%= id %> erfolgreich geändert!</p>
+				</div>
+				<%
+			}
+			%>
+			<span class="headline">Anzeige hinzufügen</span>
+			<hr style="margin-bottom:40px;">
+			<form method="post" action="offers" class="login-container">
+				<fieldset>
+					<table>
+						<tr>
+							<td>Stadt</td>
+							<td><input type="text" name="city" id="city" class="input" placeholder="Stadt eingeben..." required></td>
+						</tr>
+						<tr>
+							<td>Miete</td>
+							<td><input type="text" name="rent" id="rent" class="input" placeholder="Miete eingeben..." required></td>
+						</tr>
+						<tr>
+							<td>Mietart</td>
+							<td><input type="text" name="renttype" id="renttype" class="input" placeholder="Mietart eingeben..." required></td>
+						</tr>
+						<tr>
+							<td>Größe</td>
+							<td><input type="text" name="size" id="size" class="input" placeholder="Wohnungsgröße eingeben..." required></td>
+						</tr>
+						<tr>
+							<td>Raumanzahl</td>
+							<td><input type="text" name="roomqty" id="roomqty" class="input" placeholder="Raumanzahl eingeben..." required></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td><input type="submit" value="Anzeige absenden" class="button"></td>
+						</tr>
+					</table>
+				</fieldset>
+			</form>
+			<br>
+
+			<span class="headline">Anzeige bearbeiten/löschen</span>
+			<hr style="margin-bottom:40px;">
+			<%
+			if(offers != null && offers.length > 0){
+				%>
+				<table border="1" width="100%" cellpadding="0" cellspacing="0">
+				<%
+					offers.sort(function(a, b){return a.id-b.id});
+					for(var i = 0; i < offers.length; i++){
+						%>
+						<tr class="login-container">
+							<td align="center"><%= offers[i].id %></td>
+							<td><%= offers[i].city %></td>
+							<td><%= offers[i].rent %></td>
+							<td><%= offers[i].renttype %></td>
+							<td><%= offers[i].size %></td>
+							<td><%= offers[i].roomqty %></td>
+							<td align="center"><img src="/img/edit.png" width="26" height="26" title="Bearbeiten" onclick="openEdit('offedit<%= offers[i].id %>');" style="cursor: pointer;"></td>
+							<td align="center">
+								<img src="/img/trash.png" width="26" height="26" title="Löschen" onclick="deleteOffer(<%= offers[i].id %>);" style="cursor: pointer;">
+								<div class="popup" id="offedit<%= offers[i].id %>">
+									<img src="img/x.png" width="32" height="32"  alt="" style="float:right; cursor:pointer;" title="Close" onclick="closePopup('offedit<%= offers[i].id %>');">
+                       				<div class="clearfix"></div>
+									<form class="form-offedit" data-libid="<%= offers[i].id %>">
+										<table>
+											<tr>
+												<td>Stadt</td>
+												<td><input type="text" name="name" id="offcity<%= offers[i].id %>" class="input" value="<%= offers[i].city %>" required></td>
+											</tr>
+											<tr>
+												<td>Miete</td>
+												<td><input type="text" name="name" id="offrent<%= offers[i].id %>" class="input" value="<%= offers[i].rent %>" required></td>
+											</tr>
+											<tr>
+												<td>Mietart</td>
+												<td><input type="text" name="name" id="offrentt<%= offers[i].id %>" class="input" value="<%= offers[i].renttype %>" required></td>
+											</tr>
+											<tr>
+												<td>Größe</td>
+												<td><input type="text" name="name" id="offsize<%= offers[i].id %>" class="input" value="<%= offers[i].size %>" required></td>
+											</tr>
+											<tr>
+												<td>Raumanzahl</td>
+												<td><input type="text" name="name" id="offroomqty<%= offers[i].id %>" class="input" value="<%= offers[i].roomqty %>" required></td>
+											</tr>
+											<tr>
+												<td></td>
+												<td><input type="submit" value="Anzeige speichern" class="button"></td>
+											</tr>
+										</table>
+									</form>
+								</div>
+							</td>
+						</tr>
+						<%
+					}
+				%>
+				</table>
+				<%
+			}
+			else{
+				%>
+				<p>Keine Anzeige eingetragen!</p>
+				<%
+			}
+			%>
+			<br><br>
+			<a href="/logout">
+			<div class="button" style="text-align:center; padding-top: 8px;">
+			
+				Logout
+			
+			</div>
+			</a>
+			<script type="text/javascript">
+                function deleteOffer(id) {
+					var conf = confirm("Möchten Sie die Anzeige mit der ID " + id + " wirklich löschen?");
+					if (conf == true) {
+						$.ajax ({
+                            url: '//localhost:3000/offers/'+id,
+                            type: "DELETE",
+                            success: function(result) {
+                                document.location.href = 'nutzerbereich?s=3&id='+id;
+                            }
+                        });
+					} 
+                }
+				function openEdit(id) {
+					document.getElementById(id).style.display = 'block';
+                }
+				function closePopup(id) {
+					document.getElementById(id).style.display = 'none';
+                }
+            </script>
+		</div>
+	</main>
+    <footer>
+        <% include ../elements/footer.ejs %>
+    </footer>
+	</div>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html lang="de" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <% include ../elements/head.ejs %>
+	<title>WGhilfe - Anzeigen</title>
+</head>
+<body>
+    <header>
+        <% include ../elements/header.ejs %>
+    </header>
+    <main>
+		<div id="search">
+			<span class="headline">Anzeigen-Suche</span>
+			<hr style="margin-bottom:40px;">
+			<center>
+				<form id="filter" method="get">
+					<input type="text" name="suchen" id="suchen" class="input" placeholder="Stadt oder maximalen Mietpreis eingeben...">
+					<br>
+					<input type="submit" value="Suchen" id="submit">
+				</form>
+			</center>
+		</div>
+		<div id="content">
+			<span class="headline">Anzeigen</span>
+			<hr style="margin-bottom:40px;">
+			<table width="900" border="0" align="center" cellpadding="0" cellspacing="0">
+    			<thead>
+        			<tr>
+            			<th>&nbsp;</th>
+						<th>Stadt</th>
+						<th>Miete</th>
+						<th>Mietart</th>
+						<th>Größe</th>
+						<th>Raumanzahl</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% 
+					if(offers == null || offers.length == 0){
+						%>
+						<tr>
+							<td colspan="4" valign="middle" align="center"><b>Keine Anzeigen gefunden!</b></td>
+						</tr>
+						<% 
+					} else { 
+						for(var i = 0; i < offers.length; i++){
+							%>
+								<tr style="cursor: pointer;" onmouseover="ChangeColor(this, true);" onmouseout="ChangeColor(this, false);" onclick="DoNav('/offer/<%= offers[i].id %>');">
+									<td valign="middle" align="center"><img src="/img/lib_logo.jpg" width="30" height="30"></td>
+									<td valign="middle" align="center"><%= offers[i].city %></td>
+									<td valign="middle" align="center"><%= offers[i].rent %></td>
+									<td valign="middle" align="center"><%= offers[i].renttype %></td>
+									<td valign="middle" align="center"><%= offers[i].size %></td>
+									<td valign="middle" align="center"><%= offers[i].roomqty %></td>
+								</tr>
+							<%
+						}
+					}
+					%>
+				</tbody>
+			</table>
+		</div>
+	</main>
+    <footer>
+        <% include ../elements/footer.ejs %>
+    </footer>
+</body>
+</html>
