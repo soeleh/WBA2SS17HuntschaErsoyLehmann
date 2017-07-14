@@ -31,21 +31,22 @@ const settings = {
 // Ressources
 
 var clientsSocket = [];
-// io.set('origins','*'); // Bei Problemen mit CORS
+// When Problems appear with CORS
+// io.set('origins','*');
 io.on('connection', function(socket){
-	// ClientSocket der Socket-Liste hinzufügen
+	// ClientSocket added to Socket-List
 	clientSockets.push(socket);
 	console.log('Connection success!');
 	
 	socket.on('message', function(data){
 		console.log('msg:', data);
-		// Nachricht, die von einem Client kommt, an alle anderen Clients weitererichen
+		// Redirect (clients) Message to other Clients
 		clientSockets.forEach(function(clientSocket){
 			clientSocket.send(data);
 		});
 	});
 	
-	// ClientSocket bei Verbindungsabbruch aus der Socket-Liste entfernen
+	// Remove ClientSocket out of Socket-List when it disconnects
 	socket.on('disconnect', function(){
 		console.log('Conection disconnected!');
 		clientSockets.splice(ClientSockets.indexOf(Socket),1);
@@ -59,9 +60,7 @@ console.log("Listening on http://localhost:" + settings.port);
  * * * * * * * */
 
 app.get('/', function (req, res) {
-
     res.render('pages/index');
-
 });
 
 // Methodes
@@ -96,10 +95,9 @@ app.get('/user', function (req, res) {
                         callback(null, offers);
                     });
                 });
-
                 externalRequest.end();
-
             }],
+			
 			// Main function: renders result
             function (error, offers) { // 
 
@@ -128,7 +126,6 @@ app.get('/user', function (req, res) {
             }
         ); 
     }else {
-
         res.redirect('user_login');
     }
 });
@@ -147,14 +144,14 @@ app.get('/user_login', function (req, res) {
 
             // Set Cookie
             var cookieOptions = {
-                maxAge: 60 * 60 * 24 * 30 * 12, // one year
+				// one year
+                maxAge: 60 * 60 * 24 * 30 * 12, 
                 httpOnly: true
             };
             res.cookie('loggedin', 'true', cookieOptions);
 
-            // Zum user weiterleiten
+            // Redirect to userarea
             res.redirect('user');
-
         }else {
             res.render('pages/user_login', {
                 falschespw: true
@@ -191,7 +188,6 @@ app.post('/offers', function (req, res) {
 		req.body.roomqty 	!= null && req.body.roomqty != "") {
 
         // New offers entry
-
         var options = {
             host: 'localhost',
             port: 1337,
@@ -229,12 +225,10 @@ app.post('/offers', function (req, res) {
         }));
 
         externalRequest.end();
-
     }else {
-        // Fehlermeldung ausgeben!
+        // Display error message
         res.redirect('user?e=4');
     }
-
 })
 
  /* * * * * * * * 
@@ -300,13 +294,10 @@ app.get('/offers/:id([0-9]+)', function (req, res) {
                     }
 
                     callback(error, offerdata, offers.success.offers);
-
                 });
-
             });
 
             externalRequest.end();
-
         }
     ],
 		// Main function: Renders results
@@ -322,14 +313,12 @@ app.get('/offers/:id([0-9]+)', function (req, res) {
                     city: city
 
                 });
-
             }else {
                 res.render('pages/offers', {
 
                     offer: null,
                     city: null,
                     error: error
-
                 });
             }
         }
@@ -356,6 +345,7 @@ app.delete('/offers/:id([0-9]+)', function (req, res) {
             res.json({ "success": true });
         });
     });
+	
     externalRequest.end();
 })
 
@@ -387,7 +377,6 @@ app.put('/offers/:id([0-9]+)', function (req, res) {
             externalResponse.on('data', function (chunk) {
 
                 res.json({ success: true });
-
             });
         });
 
@@ -402,7 +391,7 @@ app.put('/offers/:id([0-9]+)', function (req, res) {
         externalRequest.end();
     }
     else {
-        // Fehlermeldung ausgeben!
+        // Display error message!
         res.redirect('user?e=4');
     }
 })
@@ -447,15 +436,11 @@ app.get('/offers', function (req, res) {
             res.render('pages/offers', {
 
                 offers: offerdata.success.offers
-
             });
-
         });
-
     });
 
     externalRequest.end();
-
 });
 
 /* * * * * * *
