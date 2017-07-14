@@ -1,0 +1,190 @@
+@charset "utf-8";
+/* CSS Document */
+
+#menue{
+	height: 100px; 
+	width:100%; 
+	background-color:green;	
+	font-size:20px;
+}
+
+#menue a{
+	color:#FFFFFF !important;
+	text-align:center;	
+}
+
+#wrapper {
+	position: relative;
+	background: #A9A9A9
+}
+
+#lib_data {
+	font-size: 26px;
+}
+a {
+	text-decoration: none;
+}
+a:hover {
+	font-weight: bold;
+}
+#content {
+	width: 900px; 
+	min-height: 200px;
+	margin: 40px auto 100px auto;
+	box-shadow: 0 1px 5px rgba(0,0,0,.1); 
+	background-color:#fff;
+	padding: 40px 40px 40px 40px; 
+}
+#search{
+	width:900px; 
+	min-height:150px; 
+	background-color:#fff; 
+	margin: 40px auto;
+	box-shadow: 0 1px 5px rgba(0,0,0,.1); 
+	padding: 40px 40px 40px 40px; 
+}
+body {
+	background-color:#E3E3E3;
+	color: #333;	
+	padding: 0px;
+	margin: 0px;
+	font-style: normal;
+    font-variant: normal;
+    font-weight: 400;
+    font-stretch: normal;
+    font-size: 16px;
+    line-height: 1.5;
+    font-family: Roboto, sans-serif;
+}
+
+.login {
+  width: 400px;
+  margin: 16px auto;
+  font-size: 16px;
+}
+
+.login-header,
+.login p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.login-header {
+  background: green;
+  padding: 20px;
+  font-size: 1.4em;
+  font-weight: normal;
+  text-align: center;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.login-container {
+  background: #ebebeb;
+  padding: 12px;
+}
+
+.login p {
+  padding: 12px;
+}
+
+.login input {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  border-width: 1px;
+  border-style: solid;
+  padding: 16px;
+  outline: 0;
+  font-family: inherit;
+  font-size: 0.95em;
+}
+
+.login input[type="password"] {
+  background: #fff;
+  border-color: #bbb;
+  color: #555;
+}
+
+.login input[type="password"]:focus {
+  border-color: #888;
+}
+
+.login input[type="submit"] {
+  background: green;
+  border-color: transparent;
+  color: #fff;
+  cursor: pointer;
+}
+
+.login input[type="submit"]:hover {
+  background: darkgreen;
+}
+
+#search input{
+	height: 30px;
+	width:400px;
+	padding-left:5px;	
+}
+
+#submit{
+	width:300px !important;
+	height: 50px !important;
+	background-color:green;
+	margin-top:30px;
+	color:#FFFFFF;
+	border:none;	
+	cursor: pointer;
+}
+
+.button{
+	min-width:200px !important;
+	height: 30px !important;
+	background-color:green;
+	color:#FFFFFF;
+	border:none;	
+	cursor: pointer;
+}
+
+.testÜberschrift {
+    background: green;
+    padding: 20px;
+    font-size: 1.4em;
+    font-weight: normal;
+    text-align: center;
+    text-transform: uppercase;
+    color: #fff;
+}
+.testBox {
+	width: 800px; 
+	min-height: 500px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.popup {
+	width:640px; 
+	min-height:200px; 
+	left: 50%;
+	top: 50%;
+	margin-left: -320px;
+	position:fixed; 
+	background-color:#f0edf2; 
+	margin-top:-150px; 
+	border-radius:10px; 
+	border:1px solid #333; 
+	padding:15px; 
+	display:none;	
+}
+.headline{
+	font-size:20px;	
+}
+
+td{
+	padding:5px;	
+}
+
+table th {
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
+	padding:10px;
+}
