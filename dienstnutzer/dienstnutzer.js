@@ -236,6 +236,13 @@ app.post('/offers', function (req, res) {
 			"size": req.body.size,
             "roomqty": req.body.roomqty
         }));
+		
+		client.publish('/messages', { text: 'An new offer was posted' } )
+			.then(function(){
+				console.log('Message received by server');
+			}, function(error) {
+			console.log('There was an error publishing:' + error.message);
+		});
 
         externalRequest.end();
     }else {
@@ -359,6 +366,13 @@ app.delete('/offers/:id([0-9]+)', function (req, res) {
         });
     });
 	
+	client.publish('/messages', { text: 'An offer was deleted' } )
+		.then(function(){
+			console.log('Message received by server');
+		}, function(error) {
+		console.log('There was an error publishing:' + error.message);
+	});
+	
     externalRequest.end();
 })
 
@@ -401,6 +415,14 @@ app.put('/offers/:id([0-9]+)', function (req, res) {
 			"size": req.body.size,
             "roomqty": req.body.roomqty
         }));
+		
+		client.publish('/messages', { text: 'An offer was changed' } )
+			.then(function(){
+				console.log('Message received by server');
+			}, function(error) {
+			console.log('There was an error publishing:' + error.message);
+		});
+		
         externalRequest.end();
     }
     else {
