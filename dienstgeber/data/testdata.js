@@ -1,6 +1,6 @@
 module.exports = {
 	init: function (app) {
-		
+
 		//Initalize testdata
 		app.route('/testdata').get(function (req,res) {
 
@@ -19,7 +19,7 @@ module.exports = {
             });
             db.incr('id:offers', function (err, rep) {
                 var newId = rep;
-                db.set('offers:'+newId, JSON.stringify(
+                db.set('offer:'+newId, JSON.stringify(
                     {
                         "id": newId,
 						"city": "Köln",
@@ -32,7 +32,7 @@ module.exports = {
             });
             db.incr('id:offers', function (err, rep) {
                 var newId = rep;
-                db.set('offers:'+newId, JSON.stringify(
+                db.set('offer:'+newId, JSON.stringify(
                     {
                         "id": newId,
 						"city": "Köln",
@@ -80,8 +80,8 @@ module.exports = {
 						"size": 72,
 						"roomqty": 3
                     }
-                ));              
-            });  
+                ));
+            });
             db.incr('id:offers', function (err, rep) {
                 var newId = rep;
                 db.set('offer:'+newId, JSON.stringify(

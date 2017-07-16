@@ -3,21 +3,19 @@ const express = require('express'),
 		bodyParser = require('body-parser'),
 		fs = require('fs'),
 		async = require('async'),
-		//redis = require('redis'),
+		redis = require('redis'),
 		Validator = require('jsonschema').Validator;
 
 // Access variables
 global.app = express(),
 global.jsonParser = bodyParser.json(),
 global.v = new Validator();
-		global.offers = require ("./data/testdata.json");
-		//db = redis.createClient();
+global.db = redis.createClient();
 app.use(jsonParser);
 
 // Settings for given Port or Port 3000
 const settings = {
-	port: process.env.PORT || 3000,
-	datafile: "./data/testdata.json"
+	port: process.env.PORT || 3000
 };
 
 // JSON scheme
@@ -55,9 +53,9 @@ v.addSchema(offerScheme, '/oneOffer');
 var data_offers = require('./data/offers.js');
 data_offers.init(app);
 
-/*Testdata
+//Testdata
 var data_testdata = require('./data/testdata.js');
-data_testdata.init(app);*/
+data_testdata.init(app);
 
 
 //Starting the app

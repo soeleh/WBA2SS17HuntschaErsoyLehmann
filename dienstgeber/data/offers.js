@@ -1,12 +1,9 @@
-app.get("/", function(req,res){
-  res.status(200).json(offers);
-});
 module.exports = {
   init: function (app) {
-app.route('/offers')
+    app.route('/offers')
       // Show all offers
       .get(function (req, res) {
-        app.get('offer:*', function (err, rep) {
+        db.keys('offer:*', function (err, rep) {
           //errorhandler
           if (err) {
             var message = {
@@ -23,7 +20,7 @@ app.route('/offers')
             return;
           }
 
-          app.get(rep, function (err, rep) {
+          db.mget(rep, function (err, rep) {
             if (err) {
               var message = {
                 "success": false,
@@ -67,7 +64,7 @@ app.route('/offers')
 
         // If true, post new offer
           if (value.valid) {
-            offers.incr('id:offers', function (err, rep) {
+            db.incr('id:offers', function (err, rep) {
               if (err) {
                 var message = {
                   "success": false,
@@ -80,7 +77,7 @@ app.route('/offers')
 
               newOffer.id = rep;
 
-              offers.set('offer:' + newOffer.id, JSON.stringify(newOffer), function (err, rep) {
+              db.set('offer:' + newOffer.id, JSON.stringify(newOffer), function (err, rep) {
                 if (err) {
                   var message = {
                     "success": false,
@@ -116,10 +113,10 @@ app.route('/offers')
       );
 
       // Get, change or delete specific offers
-app.route('/offers/:id([0-9]+)')
+    app.route('/offers/:id([0-9]+)')
       //Filter by ID
       .get(function (req, res) {
-        app.get('offer:' + req.params.id, function (err, rep) {
+        db.get('offer:' + req.params.id, function (err, rep) {
           if (err) {
             var message = {
               "success": false,
@@ -167,7 +164,7 @@ app.route('/offers/:id([0-9]+)')
         var value = v.validate(req.body, offerScheme);
         if (value.valid) {
           // If true, change offer
-          offers.exists('offer:' + req.params.id, function (err, rep) {
+          db.exists('offer:' + req.params.id, function (err, rep) {
             if (err) {
               var message = {
                 "success": false,
@@ -257,5 +254,5 @@ app.route('/offers/:id([0-9]+)')
                 }
               });
             });
-}
+  }
 }
