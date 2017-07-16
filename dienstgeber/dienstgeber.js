@@ -1,21 +1,21 @@
 // Modules
-global.express = require('express');
-global.bodyParser = require('body-parser');
-global.fs = require('fs');
-global.async = require('async');
-global.redis = require('redis');
-global.Validator = require('jsonschema').Validator;
+		bodyParser = require('body-parser'),
+		fs = require('fs'),
+		async = require('async'),
+		//redis = require('redis'),
+		Validator = require('jsonschema').Validator;
 
 // Access variables
-global.app = express();
-global.jsonParser = bodyParser.json();
-global.v = new Validator();
-global.db = redis.createClient();
-app.use(jsonParser);
+var app = express(),
+		jsonParser = bodyParser.json(),
+		v = new Validator();
+	//db = redis.createClient();
+		app.use(jsonParser);
 
-// Settings
+// Settings for given Port or Port 3000
 const settings = {
 	port: process.env.PORT || 3000,
+
 };
 
 // JSON scheme
@@ -24,7 +24,7 @@ var offerScheme = {
     "type": "object",
     "properties": {
         "id": { "type": "number" },
-        "city": { "type": "string" },  
+        "city": { "type": "string" },
         "rent": {"type": "number"},
         "renttype": { "type": "string" },
         "size": {"type": "number"},
@@ -38,11 +38,11 @@ v.addSchema(offerScheme, '/oneOffer');
 
 /*-------Offer example-------
 {
-	"id": 			1, 
-	"city": 		"Gummersbach", 	
-	"rent": 		450, 
-	"renttype": 	"warm", 
-	"size": 		9,  
+	"id": 			1,
+	"city": 		"Gummersbach",
+	"rent": 		450,
+	"renttype": 	"warm",
+	"size": 		9,
 	"roomqty": 		1
 }
 */
