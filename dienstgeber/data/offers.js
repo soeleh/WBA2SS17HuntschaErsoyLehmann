@@ -12,15 +12,16 @@ module.exports = {
               "message": err
               }
             }
-          return res.status(500).json(message);
+            return res.status(500).json(message);
           }
-
+          //If no offer listed
           if (rep.length == 0) {
             res.json(offers);
             return;
           }
-
+          //returns value of specified keys
           db.mget(rep, function (err, rep) {
+            //errorhandler
             if (err) {
               var message = {
                 "success": false,
@@ -30,7 +31,7 @@ module.exports = {
               }
               return res.status(500).json(message);
             }
-
+            //success
             var message = {
               "success": {
                 "message": "Request success!",
@@ -38,7 +39,6 @@ module.exports = {
               },
               "error": false
             }
-
             res.status(200).json(message);
           });
         });
@@ -56,12 +56,9 @@ module.exports = {
           }
           return res.status(400).json(message);
         }
-
         var newOffer = req.body;
-
         // Validates new offer
         var value = v.validate(newOffer, offerScheme);
-
         // If true, post new offer
           if (value.valid) {
             db.incr('id:offers', function (err, rep) {
@@ -112,7 +109,7 @@ module.exports = {
         }
       );
 
-      // Get, change or delete specific offers
+    // Get, change or delete specific offers
     app.route('/offers/:id([0-9]+)')
       //Filter by ID
       .get(function (req, res) {
@@ -163,7 +160,7 @@ module.exports = {
         // Validates offer
         var value = v.validate(req.body, offerScheme);
         if (value.valid) {
-          // If true, change offer
+          // If true, check if offer exists
           db.exists('offer:' + req.params.id, function (err, rep) {
             if (err) {
               var message = {
@@ -174,7 +171,7 @@ module.exports = {
               }
               return res.status(500).json(message);
             }
-
+            //if existing, update
             if (rep == 1) {
               var updatedOffer = req.body;
               updatedOffer.id = req.params.id;
@@ -188,36 +185,36 @@ module.exports = {
                   }
                   return res.status(500).json(message);
                 }
-                  var message = {
-                    "success": {
-                      "message": "Successfully updated!",
-                      "updatedOffer": updatedOffer
-                    },
-                    "error": false
-                  }
-                  res.status(200).json(message);
-                });
-              }
-              else {
                 var message = {
-                  "success": false,
-                  "error": {
-                    "message": "Offer with the id " + req.params.id + " not found!"
-                  }
+                  "success": {
+                    "message": "Successfully updated!",
+                    "updatedOffer": updatedOffer
+                  },
+                  "error": false
                 }
-                res.status(404).json(message);
-              }
-            });
-          }
-          else {
+                res.status(200).json(message);
+              });
+            }
+            //if not found
             var message = {
               "success": false,
               "error": {
-                "message": "The JSON object is not valid!",
-                "details": value.errors
+                "message": "Offer with the id " + req.params.id + " not found!"
               }
             }
-            res.status(400).json(message);
+            res.status(404).json(message);
+          });
+        }
+        //wrong input
+        else {
+          var message = {
+            "success": false,
+            "error": {
+              "message": "The JSON object is not valid!",
+              "details": value.errors
+            }
+          }
+          res.status(400).json(message);
           }
         })
 
@@ -233,7 +230,7 @@ module.exports = {
                   }
                   return res.status(500).json(message);
                 }
-
+                //success
                 if (rep == 1) {
                   var message = {
                     "success": {
@@ -243,6 +240,7 @@ module.exports = {
                   }
                   res.status(200).json(message);
                 }
+                //not found
                 else {
                   var message = {
                     "success": false,
