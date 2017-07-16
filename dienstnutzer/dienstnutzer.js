@@ -31,13 +31,21 @@ var fayeserver = http.createServer();
  *   Settings  *
  * * * * * * * */
 
-app.use(express.static(__dirname + '/offers'));
+app.use(express.static(__dirname + '/data'));
 app.set('view engine', 'ejs');
 
 const settings = {
 	port: 1337,
 	httpport: 1338
 };
+
+/* * * * * * * *
+ *   Homepage  *
+ * * * * * * * */
+
+app.get('/', function (req, res) {
+    res.render('../data/pages/index');
+});
 
 /* * * * * * * * *
  *   Ressources  *
@@ -85,14 +93,6 @@ fayeservice.attach(fayeserver);
 var client = new faye.Client('http://localhost:'+ settings.port +'/faye');
 client.subscribe('/messages', function(message){
 	console.log('Got a new message: ' + message.text + '!');
-});
-
-/* * * * * * * *
- *   Homepage  *
- * * * * * * * */
-
-app.get('/', function (req, res) {
-    res.render('pages/index');
 });
 
 // Methodes
@@ -148,7 +148,7 @@ app.get('/user', function (req, res) {
                     var offer = [];
                 }
 
-                res.render('pages/user', {
+                res.render('../data/pages/loggedin', {
                     error: error,
                     success: success,
                     id: id,
@@ -158,7 +158,7 @@ app.get('/user', function (req, res) {
             }
         ); 
     }else {
-        res.redirect('user_login');
+        res.redirect('login');
     }
 });
 
@@ -166,7 +166,7 @@ app.get('/user', function (req, res) {
  *  User Login  *
  * * * * * * * * */
 
-app.get('/user_login', function (req, res) {
+app.get('/loggedin', function (req, res) {
 
     if (req.query.passwort != null) {
 
@@ -182,15 +182,15 @@ app.get('/user_login', function (req, res) {
             };
             res.cookie('loggedin', 'true', cookieOptions);
 
-            // Redirect to userarea
-            res.redirect('user');
+            // Redirect to homescreen
+            res.redirect('../data/pages/index');
         }else {
-            res.render('pages/user_login', {
+            res.render('../data/pages/login', {
                 falschespw: true
             });
         }
     }else {
-        res.render('pages/user_login', {
+        res.render('../data/pages/login', {
             falschespw: false
         });
     }
@@ -200,10 +200,10 @@ app.get('/user_login', function (req, res) {
  *  User Logout  *
  * * * * * * * * */
 
-app.get('/user_logout', function (req, res) {
+app.get('/logout', function (req, res) {
     
 	res.clearCookie('loggedin');
-    res.redirect('user_login');
+    res.redirect('../data/pages/loggedin');
 });
 
 /* * * * * * * * * * * * *
@@ -346,14 +346,14 @@ app.get('/offers/:id([0-9]+)', function (req, res) {
 
                 var offer = JSON.parse(offer.success.offer);
 
-                res.render('pages/offers', {
+                res.render('../data/pages/offers', {
 
                     offer: offer,
                     city: city
 
                 });
             }else {
-                res.render('pages/offers', {
+                res.render('../data/pages/offers', {
 
                     offer: null,
                     city: null,
@@ -487,7 +487,7 @@ app.get('/offers', function (req, res) {
 
             var offerdata = JSON.parse(chunk);
 			
-            res.render('pages/offers', {
+            res.render('../data/pages/offers', {
                 offers: offerdata.success.offers
             });
         });
