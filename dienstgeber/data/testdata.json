@@ -1,50 +1,46 @@
 {
-  "offers": [
+  "offer": [
     {
-            "id": 0,
-						"city": "Köln",
-						"rent": 300,
-						"renttype": "kalt",
-						"size": 11,
-						"roomqty": 1
-          },
-
-    {       "id": 1,
-						"city": "Köln",
-						"rent": 700,
-						"renttype": "warm",
-						"size": 53,
-						"roomqty": 3
-          },
-    {
-            "id": 2,
-            "city": "Köln",
-            "rent": 1050,
-            "renttype": "warm",
-            "size": 72,
-            "roomqty": 5
-          },
-
-    {       "id": 3,
-            "city": "Gummersbach",
-            "rent": 240,
-            "renttype": "warm",
-            "size": 11,
-            "roomqty": 1
-          },
-    {       "id": 4,
-						"city": "Gummersbach",
-						"rent": 420,
-						"renttype": "warm",
-						"size": 49,
-						"roomqty": 2
-          },
-  {         "id": 5,
-						"city": "Grevenbroich",
-						"rent": 300,
-						"renttype": "warm",
-						"size": 59,
-						"roomqty": 3
-          }
-        ]
+        "id": 0,
+		"city": "Köln",
+		"rent": 300,
+		"renttype": "kalt",
+		"size": 11,
+		"roomqty": 1
+    },{       
+		"id": 1,
+		"city": "Köln",
+		"rent": 700,
+		"renttype": "warm",
+		"size": 53,
+		"roomqty": 3
+    },{
+        "id": 2,
+        "city": "Köln",
+        "rent": 1050,
+        "renttype": "warm",
+        "size": 72,
+        "roomqty": 5
+    },{       
+		"id": 3,
+        "city": "Gummersbach",
+        "rent": 240,
+        "renttype": "warm",
+        "size": 11,
+        "roomqty": 1
+    },{   
+		"id": 4,
+		"city": "Gummersbach",
+		"rent": 420,
+		"renttype": "warm",
+		"size": 49,
+		"roomqty": 2
+    },{    
+		"id": 5,
+		"city": "Grevenbroich",
+		"rent": 300,
+		"renttype": "warm",
+		"size": 59,
+		"roomqty": 3
+    }]
 }

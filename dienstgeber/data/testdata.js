@@ -19,7 +19,7 @@ module.exports = {
             });
             db.incr('id:offers', function (err, rep) {
                 var newId = rep;
-                db.set('offer:'+newId, JSON.stringify(
+                db.set('offers:'+newId, JSON.stringify(
                     {
                         "id": newId,
 						"city": "Köln",
@@ -32,7 +32,7 @@ module.exports = {
             });
             db.incr('id:offers', function (err, rep) {
                 var newId = rep;
-                db.set('offer:'+newId, JSON.stringify(
+                db.set('offers:'+newId, JSON.stringify(
                     {
                         "id": newId,
 						"city": "Köln",
