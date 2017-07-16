@@ -1,7 +1,6 @@
 // Modules
 const express = require('express'),
 		bodyParser = require('body-parser'),
-		fs = require('fs'),
 		async = require('async'),
 		redis = require('redis'),
 		Validator = require('jsonschema').Validator;
