@@ -21,9 +21,7 @@ var app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 //cookie.parser
 app.use(cookieParser());
-//socket.io
-var httpServer = require('http').Server(app);
-var io = require('socket.io')(httpServer);
+
 //Faye
 var fayeserver = http.createServer();
 
@@ -36,8 +34,24 @@ app.set('view engine', 'ejs');
 
 const settings = {
 	port: 1337,
-	httpport: 1338
+	socketioport: 1338,
+	fayeport: 1339
 };
+
+/* * * * * * *
+ *   Faye    *
+ * * * * * * */
+ 
+//Serverside Server 
+var fayeservice = new faye.NodeAdapter({ mount: '/faye', timeout: 45});
+fayeservice.attach(fayeserver);
+fayeserver.listen(settings.fayeport);
+
+//Serverside Client
+var client = new faye.Client('http://localhost:'+ settings.fayeport +'/faye');
+client.subscribe('/messages', function(message){
+	console.log('Got a new message: ' + message.text + '!');
+});
 
 /* * * * * * * *
  *   Homepage  *
@@ -54,7 +68,10 @@ app.get('/', function (req, res) {
 /* * * * * * * *
  *  Socket.io  *
  * * * * * * * */
- 
+
+//socket.io
+var httpServer = require('http').Server(app);
+var io = require('socket.io')(httpServer);
 var clientsSocket = [];
 // When Problems appear with CORS
 // io.set('origins','*');
@@ -76,24 +93,7 @@ io.on('connection', function(socket){
 		clientSockets.splice(ClientSockets.indexOf(Socket),1);
 	});
 });
-httpServer.listen(settings.httpport);
-
-/* * * * * * *
- *   Faye    *
- * * * * * * */
- 
-var fayeservice = new faye.NodeAdapter({
-	mount: '/faye',
-	timeout: 45
-});
-
-fayeservice.attach(fayeserver);
-
-//Serverside Client
-var client = new faye.Client('http://localhost:'+ settings.port +'/faye');
-client.subscribe('/messages', function(message){
-	console.log('Got a new message: ' + message.text + '!');
-});
+httpServer.listen(settings.socketioport);
 
 // Methodes
 
@@ -256,7 +256,7 @@ app.post('/offers', function (req, res) {
 			"roomqty": req.body.roomqty
         }));
 		
-		client.publish('/messages', { text: 'An new offer was posted' } )
+		client.publish('/messages', { text: 'An new offer (ID:'++') was posted' } )
 			.then(function(){
 				console.log('Message received by server');
 			}, function(error) {
@@ -385,7 +385,7 @@ app.delete('/offers/:id([0-9]+)', function (req, res) {
         });
     });
 	
-	client.publish('/messages', { text: 'An offer was deleted' } )
+	client.publish('/messages', { text: 'An offer (ID:'++') was deleted' } )
 		.then(function(){
 			console.log('Message received by server');
 		}, function(error) {
@@ -435,7 +435,7 @@ app.put('/offers/:id([0-9]+)', function (req, res) {
 			"roomqty": req.body.roomqty
         }));
 		
-		client.publish('/messages', { text: 'An offer was changed' } )
+		client.publish('/messages', { text: 'An offer (ID:'++')was changed' } )
 			.then(function(){
 				console.log('Message received by server');
 			}, function(error) {
@@ -506,10 +506,12 @@ function welcomeScreen(){
     console.log('+                   WGhilfe                  +');
     console.log('++++++++++++++++++++++++++++++++++++++++++++++');
 	console.log('+                                            +');
-	console.log('+          Socket.io is listening on         +');
-	console.log('+            http://localhost:' + settings.httpport+'           +');
+    console.log('+      Server is listening on Port '+settings.port+'      +'); 
+	console.log('+                                            +');
+    console.log('+        Faye is listening on Port '+settings.fayeport+'      +'); 
     console.log('+                                            +');
-    console.log('+      Server is running on Port '+settings.port+'        +');
+	console.log('+          Socket.io is listening on         +');
+	console.log('+            http://localhost:' + settings.socketioport+'           +');
     console.log('+                                            +');
     console.log('+ Open http://localhost:'+settings.port+' in your Browser +');
 	console.log('+                                            +');

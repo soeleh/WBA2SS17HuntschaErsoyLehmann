@@ -3,7 +3,7 @@ var http = require('http'),
 	faye = require('faye');
 	
 // Server
-var server = http.createServer();
+var fayeserver = http.createServer();
 	
 // Node Adapter
 var fayeservice = new faye.NodeAdapter({
@@ -11,5 +11,5 @@ var fayeservice = new faye.NodeAdapter({
 	timeout: 45
 });
 
-fayeservice.attach(server);
+fayeservice.attach(fayeserver);
 	
