@@ -256,7 +256,7 @@ app.post('/offers', function (req, res) {
 			"roomqty": req.body.roomqty
         }));
 
-		client.publish('/messages', { text: 'An new offer (ID:'++') was posted' } )
+		client.publish('/messages', { text: 'An new offer (ID:'+req.params.id+') was posted' } )
 			.then(function(){
 				console.log('Message received by server');
 			}, function(error) {
@@ -435,7 +435,7 @@ app.put('/offers/:id([0-9]+)', function (req, res) {
 			"roomqty": req.body.roomqty
         }));
 
-		client.publish('/messages', { text: 'An offer (ID:'++')was changed' } )
+		client.publish('/messages', { text: 'An offer (ID:'+req.params.id+')was changed' } )
 			.then(function(){
 				console.log('Message received by server');
 			}, function(error) {
