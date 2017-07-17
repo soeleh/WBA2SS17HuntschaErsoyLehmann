@@ -33,7 +33,7 @@ app.use(express.static(__dirname + '/data'));
 app.set('view engine', 'ejs');
 
 const settings = {
-	port: 1337,
+	port: process.env.PORT || 1337,
 	socketioport: 1338,
 	fayeport: 1339
 };
@@ -111,7 +111,7 @@ app.get('/user', function (req, res) {
 
                 var options = {
                     host: 'localhost',
-                    port: '1337',
+                    port: 3000,
                     path: '/offers',
                     method: 'GET',
                     headers: {
@@ -276,14 +276,17 @@ app.post('/offers', function (req, res) {
 
 app.get('/offers/:id([0-9]+)', function (req, res) {
 
+    var id = req.params.id;
+    
     async.waterfall([
-		// Find specific offer
-        function (callback) {
+        function (callback) { // Die angegebene Anzeige raussuchen
 
-            var id = req.params.id;
+            var offerdata;
+
             var options = {
                 host: 'localhost',
-                port: '1337',
+				agent:false,
+                port: 3000,
                 path: '/offers/' + id,
                 method: 'GET',
                 headers: {
@@ -295,68 +298,39 @@ app.get('/offers/:id([0-9]+)', function (req, res) {
 
                 externalResponse.on('data', function (chunk) {
 
-                    var offerdata = JSON.parse(chunk);
+                    offerdata = JSON.parse(chunk);
 
                     if (offerdata.success == false) {
-                        var error = new Error("Offers Error:" + offerdata.error.message);
-                    }else {
+                        var error = new Error("anzeige Error:" + offerdata.error.message);
+                    }
+                    else {
                         var error = null;
                     }
+
                     callback(error, offerdata);
+
                 });
-            });
-            externalRequest.end();
-        },
-		// Get all offers
-        function (offerdata, callback) {
 
-            var options = {
-                host: 'localhost',
-                port: '1337',
-                path: '/offers',
-                method: 'GET',
-                headers: {
-                    accept: 'application/json'
-                }
-            }
-
-            var externalRequest = http.request(options, function (externalResponse) {
-
-                externalResponse.on('data', function (chunk) {
-
-                    var offers = JSON.parse(chunk);
-
-                    if (offers.success == false) {
-                        var error = new Error("Offers Error:" + offers.error.message);
-                    }else {
-                        var error = null;
-                    }
-
-                    callback(error, offerdata, offers.success.offers);
-                });
             });
 
             externalRequest.end();
-        }
-    ],
-		// Main function: Renders results
-        function (error, offer, city) {
+
+        }],
+        function (error, offerdata) { // Main Funktion: Ergebnis rendern
 
             if (error == null) {
 
-                var offer = JSON.parse(offer.success.offer);
+                var anzeige = JSON.parse(offerdata.success.offers);
 
-                res.render('../data/pages/offers', {
+                res.render('pages/offers', {
 
-                    offer: offer,
-                    city: city
-
+                    anzeige: anzeige,
                 });
-            }else {
-                res.render('../data/pages/offers', {
+            }
+            else {
+                res.render('pages/offers', {
 
-                    offer: null,
-                    city: null,
+                    anzeige: null,
                     error: error
                 });
             }
@@ -372,7 +346,7 @@ app.delete('/offers/:id([0-9]+)', function (req, res) {
 
     var options = {
         host: 'localhost',
-        port: 1337,
+        port: 3000,
         path: '/offers/' + req.params.id,
         method: 'DELETE',
         headers: {
@@ -410,7 +384,7 @@ app.put('/offers/:id([0-9]+)', function (req, res) {
 
         var options = {
             host: 'localhost',
-            port: 1337,
+            port: 3000,
             path: '/offers/' + req.params.id,
             method: 'PUT',
             headers: {
@@ -462,7 +436,7 @@ app.get('/offers', function (req, res) {
 	if(req.query.search != null){
 		var options = {
 			host: 'localhost',
-			port: '1337',
+			port: 3000,
 			path: '/offers?search=' + search,
 			method: 'GET',
 			headers: {
@@ -472,7 +446,7 @@ app.get('/offers', function (req, res) {
 	}else{
 		var options = {
 			host: 'localhost',
-			port: '1337',
+			port: 3000,
 			path: '/offers',
 			method: 'GET',
 			headers: {
