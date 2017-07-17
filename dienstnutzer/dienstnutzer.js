@@ -1,6 +1,6 @@
 ﻿// Get Change(Put) Delete	specific Offers + + +
 // Get 				 		all 	 Offers +
-// Post				 		specific Offers ?		
+// Post				 		specific Offers ?
 
 var http = require('http');
 var express = require('express');
@@ -41,8 +41,8 @@ const settings = {
 /* * * * * * *
  *   Faye    *
  * * * * * * */
- 
-//Serverside Server 
+
+//Serverside Server
 var fayeservice = new faye.NodeAdapter({ mount: '/faye', timeout: 45});
 fayeservice.attach(fayeserver);
 fayeserver.listen(settings.fayeport);
@@ -79,7 +79,7 @@ io.on('connection', function(socket){
 	// ClientSocket added to Socket-List
 	clientSockets.push(socket);
 	console.log('Connection success!');
-	
+
 	socket.on('message', function(data){
 		console.log('msg:', data);
 		// Redirect (clients) Message to other Clients
@@ -129,9 +129,9 @@ app.get('/user', function (req, res) {
                 });
                 externalRequest.end();
             }],
-			
+
 			// Main function: renders result
-            function (error, offers) { // 
+            function (error, offers) { //
 
                 var error = 0;
                 var success = 0;
@@ -156,7 +156,7 @@ app.get('/user', function (req, res) {
                     offer: offer
                 });
             }
-        ); 
+        );
     }else {
         res.redirect('login');
     }
@@ -177,7 +177,7 @@ app.get('/loggedin', function (req, res) {
             // Set Cookie
             var cookieOptions = {
 				// one year
-                maxAge: 60 * 60 * 24 * 30 * 12, 
+                maxAge: 60 * 60 * 24 * 30 * 12,
                 httpOnly: true
             };
             res.cookie('loggedin', 'true', cookieOptions);
@@ -201,7 +201,7 @@ app.get('/loggedin', function (req, res) {
  * * * * * * * * */
 
 app.get('/logout', function (req, res) {
-    
+
 	res.clearCookie('loggedin');
     res.redirect('../data/pages/loggedin');
 });
@@ -212,11 +212,11 @@ app.get('/logout', function (req, res) {
 
 app.post('/offers', function (req, res) {
 
-    if (req.body.id 		!= null && req.body.id != "" 		&& 
-		req.body.city 		!= null && req.body.city != "" 		&& 
-		req.body.rent 		!= null && req.body.rent != "" 		&& 
-		req.body.renttype 	!= null && req.body.renttype != "" 	&& 
-		req.body.size		!= null && req.body.size != "" 		&& 
+    if (req.body.id 		!= null && req.body.id != "" 		&&
+		req.body.city 		!= null && req.body.city != "" 		&&
+		req.body.rent 		!= null && req.body.rent != "" 		&&
+		req.body.renttype 	!= null && req.body.renttype != "" 	&&
+		req.body.size		!= null && req.body.size != "" 		&&
 		req.body.roomqty 	!= null && req.body.roomqty != "") {
 
         // New offers entry
@@ -255,7 +255,7 @@ app.post('/offers', function (req, res) {
 			"size": req.body.size,
 			"roomqty": req.body.roomqty
         }));
-		
+
 		client.publish('/messages', { text: 'An new offer (ID:'++') was posted' } )
 			.then(function(){
 				console.log('Message received by server');
@@ -270,7 +270,7 @@ app.post('/offers', function (req, res) {
     }
 })
 
-/* * * * * * * * 
+/* * * * * * * *
  * Offer per ID *
  * * * * * * * */
 
@@ -278,7 +278,7 @@ app.get('/offers/:id([0-9]+)', function (req, res) {
 
     async.waterfall([
 		// Find specific offer
-        function (callback) { 
+        function (callback) {
 
             var id = req.params.id;
             var options = {
@@ -308,7 +308,7 @@ app.get('/offers/:id([0-9]+)', function (req, res) {
             externalRequest.end();
         },
 		// Get all offers
-        function (offerdata, callback) { 
+        function (offerdata, callback) {
 
             var options = {
                 host: 'localhost',
@@ -340,7 +340,7 @@ app.get('/offers/:id([0-9]+)', function (req, res) {
         }
     ],
 		// Main function: Renders results
-        function (error, offer, city) { 
+        function (error, offer, city) {
 
             if (error == null) {
 
@@ -361,7 +361,7 @@ app.get('/offers/:id([0-9]+)', function (req, res) {
                 });
             }
         }
-    ); 
+    );
 });
 
 /* * * * * * * * * * * *
@@ -384,14 +384,14 @@ app.delete('/offers/:id([0-9]+)', function (req, res) {
             res.json({ "success": true });
         });
     });
-	
-	client.publish('/messages', { text: 'An offer (ID:'++') was deleted' } )
+
+	client.publish('/messages', { text: 'An offer (ID:'+req.params.id+') was deleted' } )
 		.then(function(){
 			console.log('Message received by server');
 		}, function(error) {
 		console.log('There was an error publishing:' + error.message);
 	});
-	
+
     externalRequest.end();
 })
 
@@ -401,13 +401,13 @@ app.delete('/offers/:id([0-9]+)', function (req, res) {
 
 app.put('/offers/:id([0-9]+)', function (req, res) {
 
-    if (req.body.id 		!= null && req.body.id != "" 		&& 
-		req.body.city 		!= null && req.body.city != "" 		&& 
-		req.body.rent 		!= null && req.body.rent != "" 		&& 
-		req.body.renttype 	!= null && req.body.renttype != "" 	&& 
-		req.body.size		!= null && req.body.size != "" 		&& 
+    if (req.body.id 		!= null && req.body.id != "" 		&&
+		req.body.city 		!= null && req.body.city != "" 		&&
+		req.body.rent 		!= null && req.body.rent != "" 		&&
+		req.body.renttype 	!= null && req.body.renttype != "" 	&&
+		req.body.size		!= null && req.body.size != "" 		&&
 		req.body.roomqty 	!= null && req.body.roomqty != "") {
-				
+
         var options = {
             host: 'localhost',
             port: 1337,
@@ -417,7 +417,7 @@ app.put('/offers/:id([0-9]+)', function (req, res) {
                 'Content-Type': 'application/json'
             }
         };
-		
+
         var externalRequest = http.request(options, function (externalResponse) {
 
             externalResponse.on('data', function (chunk) {
@@ -434,14 +434,14 @@ app.put('/offers/:id([0-9]+)', function (req, res) {
 			"size": req.body.size,
 			"roomqty": req.body.roomqty
         }));
-		
+
 		client.publish('/messages', { text: 'An offer (ID:'++')was changed' } )
 			.then(function(){
 				console.log('Message received by server');
 			}, function(error) {
 			console.log('There was an error publishing:' + error.message);
 		});
-		
+
         externalRequest.end();
     }
     else {
@@ -486,7 +486,7 @@ app.get('/offers', function (req, res) {
         externalResponse.on('data', function (chunk) {
 
             var offerdata = JSON.parse(chunk);
-			
+
             res.render('../data/pages/offers', {
                 offers: offerdata.success.offers
             });
@@ -499,16 +499,16 @@ app.get('/offers', function (req, res) {
 /* * * * * * * * * *
  *  ConsoleScreen  *
  * * * * * * * * * */
- 
+
 function welcomeScreen(){
     console.log('');
     console.log('++++++++++++++++++++++++++++++++++++++++++++++');
     console.log('+                   WGhilfe                  +');
     console.log('++++++++++++++++++++++++++++++++++++++++++++++');
 	console.log('+                                            +');
-    console.log('+      Server is listening on Port '+settings.port+'      +'); 
+    console.log('+      Server is listening on Port '+settings.port+'      +');
 	console.log('+                                            +');
-    console.log('+        Faye is listening on Port '+settings.fayeport+'      +'); 
+    console.log('+        Faye is listening on Port '+settings.fayeport+'      +');
     console.log('+                                            +');
 	console.log('+          Socket.io is listening on         +');
 	console.log('+            http://localhost:' + settings.socketioport+'           +');
