@@ -14,7 +14,7 @@ app.use(jsonParser);
 
 // Settings for given Port or Port 3000
 const settings = {
-	port: process.env.PORT || 3000
+	port: process.env.PORT
 };
 
 // JSON scheme
