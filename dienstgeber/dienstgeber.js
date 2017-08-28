@@ -1,21 +1,16 @@
 // Modules
-const express = require('express'),
-		bodyParser = require('body-parser'),
-		async = require('async'),
-		redis = require('redis'),
-		Validator = require('jsonschema').Validator;
+var express = require('express'),
+    bodyParser = require('body-parser'),
+    async = require('async'),
+    fs = require('fs'),
+    validator = require('jsonschema').Validator;
 
 // Access variables
-global.app = express(),
-global.jsonParser = bodyParser.json(),
-global.v = new Validator();
-global.db = redis.createClient();
-app.use(jsonParser);
+var app = express(),
+    v = new validator();
 
-// Settings for given Port or Port 3000
-const settings = {
-	port: process.env.PORT || 3000
-};
+var offers = require('./offers');
+app.use('/offers', offers);
 
 // JSON scheme
 global.offerScheme = {
@@ -29,33 +24,39 @@ global.offerScheme = {
         "size": {"type": "number"},
         "roomqty": {"type": "number"}
     },
-    "required": ["id", "city", "rent", "renttype", "size", "roomqty"],
-    "additionalProperties": false
+    "required": ["id", "city", "rent", "renttype", "size", "roomqty"]
 };
 
 v.addSchema(offerScheme, '/oneOffer');
 
-/*-------Offer example-------
-{
-	"id": 			1,
-	"city": 		"Gummersbach",
-	"rent": 		450,
-	"renttype": 	"warm",
-	"size": 		9,
-	"roomqty": 		1
-}
-*/
+// Settings for given Port or Port 3000
+const settings = {
+	port: process.env.PORT || 3000,
+  datafile: "./data/testdata.json"
+};
 
-//Add data
+//In-memory data module
+global.data = require("./data");
 
-//Offers
-var data_offers = require('./data/offers.js');
-data_offers.init(app);
+//Read data from disk to memory
+async.waterfall([
 
-//Testdata
-var data_testdata = require('./data/testdata.js');
-data_testdata.init(app);
+		function(callback){
+			fs.readFile(settings.datafile, 'utf8', function(err, filestring) { callback(null, err, filestring); });
+    },
 
+		function(err, filestring, callback) {
+			if (err!= null) { callback(null, false); }
+			else {
+				data.offers = JSON.parse(filestring).offers;
+        callback(null, true);
+			}
+		 }
+   ],
+		function(err, success){
+      if(err!== null) { success = false; }
+			console.log('Offer data '+(success ? 'successfully' : 'unsuccessfully')+' loaded.');
+		});
 
 //Starting the app
 app.listen(settings.port, function(){
