@@ -6,8 +6,8 @@ var express = require('express'),
     validator = require('jsonschema').Validator;
 
 // Access variables
-var app = express(),
-    v = new validator();
+var app = express();
+global.v = new validator();
 
 var offers = require('./offers');
 app.use('/offers', offers);
@@ -31,14 +31,14 @@ v.addSchema(offerScheme, '/oneOffer');
 
 // Settings for given Port or Port 3000
 const settings = {
-	port: process.env.PORT || 3000,
-  datafile: "./data/testdata.json"
+	port: process.env.PORT || 3000
 };
 
-//In-memory data module
+/*In-memory data module
 global.data = require("./data");
+*/
 
-//Read data from disk to memory
+/*Read data from disk to memory
 async.waterfall([
 
 		function(callback){
@@ -57,7 +57,7 @@ async.waterfall([
       if(err!== null) { success = false; }
 			console.log('Offer data '+(success ? 'successfully' : 'unsuccessfully')+' loaded.');
 		});
-
+*/
 //Starting the app
 app.listen(settings.port, function(){
 	console.log("Service is running on port "+settings.port+".");
