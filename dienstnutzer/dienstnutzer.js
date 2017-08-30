@@ -5,7 +5,7 @@
 var http = require('http');
 var express = require('express');
 var bodyParser = require('body-parser');
-var ejs = require('ejs');
+//var ejs = require('ejs');
 var cookieParser = require('cookie-parser');
 var async = require("async");
 var faye = require('faye');
@@ -95,131 +95,13 @@ io.on('connection', function(socket){
 });
 httpServer.listen(settings.socketioport);
 
-// Methodes
 
-/* * * * * * *
- * Userarea  *
- * * * * * * */
 
-app.get('/user', function (req, res) {
-
-    if (req.cookies.loggedin === 'true') {
-
-        async.waterfall([
-			// Get all Offers
-            function (callback) {
-
-                var options = {
-                    host: 'localhost',
-                    port: 3000,
-                    path: '/offers',
-                    method: 'GET',
-                    headers: {
-                        accept: 'application/json'
-                    }
-                }
-
-                var externalRequest = http.request(options, function (externalResponse) {
-                    externalResponse.on('data', function (chunk) {
-
-                        var offers = JSON.parse(chunk);
-
-                        callback(null, offers);
-                    });
-                });
-                externalRequest.end();
-            }],
-
-			// Main function: renders result
-            function (error, offers) { //
-
-                var error = 0;
-                var success = 0;
-                var id = 0;
-
-                if (req.query.e != null) {
-                    error = req.query.e;
-                }
-
-                if (req.query.s != null && req.query.id != null) {
-                    success = req.query.s;
-                    id = req.query.id;
-                }else {
-                    var offer = [];
-                }
-
-                res.render('../data/pages/loggedin', {
-                    error: error,
-                    success: success,
-                    id: id,
-                    offers: offers.success.offers,
-                    offer: offer
-                });
-            }
-        );
-    }else {
-        res.redirect('login');
-    }
-});
-
-/* * * * * * * * *
- *  User Login  *
- * * * * * * * * */
-
-app.get('/loggedin', function (req, res) {
-
-    if (req.query.passwort != null) {
-
-        var pw = req.query.passwort;
-
-        if (pw == "mypass") {
-
-            // Set Cookie
-            var cookieOptions = {
-				// one year
-                maxAge: 60 * 60 * 24 * 30 * 12,
-                httpOnly: true
-            };
-            res.cookie('loggedin', 'true', cookieOptions);
-
-            // Redirect to homescreen
-            res.redirect('../data/pages/index');
-        }else {
-            res.render('../data/pages/login', {
-                falschespw: true
-            });
-        }
-    }else {
-        res.render('../data/pages/login', {
-            falschespw: false
-        });
-    }
-});
-
-/* * * * * * * * *
- *  User Logout  *
- * * * * * * * * */
-
-app.get('/logout', function (req, res) {
-
-	res.clearCookie('loggedin');
-    res.redirect('../data/pages/loggedin');
-});
-
-/* * * * * * * * * * * * *
- *      Post offers      *
- * * * * * * * * * * * * */
+//METHODES
 
 app.post('/offers', function (req, res) {
 
-    if (req.body.id 		!= null && req.body.id != "" 		&&
-		req.body.city 		!= null && req.body.city != "" 		&&
-		req.body.rent 		!= null && req.body.rent != "" 		&&
-		req.body.renttype 	!= null && req.body.renttype != "" 	&&
-		req.body.size		!= null && req.body.size != "" 		&&
-		req.body.roomqty 	!= null && req.body.roomqty != "") {
-
-        // New offers entry
+    // New offers entry
         var options = {
             host: 'localhost',
             port: 1337,
@@ -235,199 +117,27 @@ app.post('/offers', function (req, res) {
             externalResponse.on('data', function (chunk) {
 
                 var offerdata = JSON.parse(chunk);
-
-                if (offerdata != null) {
-
-                    if (offerdata.success != false) {
-                        res.redirect('user?s=1&id=' + offerdata.success.newoffer.id);
-                    }else {
-                        res.redirect('user?e=' + offerdata.error.message);
-                    }
-                }
+                
             });
         });
 
         externalRequest.write(JSON.stringify({
-            "id": req.body.id,
-            "city": req.body.city,
-			"rent": req.body.rent,
-            "rentype": req.body.renttype,
-			"size": req.body.size,
-			"roomqty": req.body.roomqty
+            "id": req.params.id,
+            "city": req.params.city,
+			"rent": req.params.rent,
+            "rentype": req.params.renttype,
+			"size": req.params.size,
+			"roomqty": req.params.roomqty
         }));
-
-		client.publish('/messages', { text: 'An new offer (ID:'+req.params.id+') was posted' } )
-			.then(function(){
-				console.log('Message received by server');
-			}, function(error) {
-			console.log('There was an error publishing:' + error.message);
-		});
-
-        externalRequest.end();
-    }else {
-        // Display error message
-        res.redirect('user?e=4');
-    }
-})
-
-/* * * * * * * *
- * Offer per ID *
- * * * * * * * */
-
-app.get('/offers/:id([0-9]+)', function (req, res) {
-
-    var id = req.params.id;
-    
-    async.waterfall([
-        function (callback) { // Die angegebene Anzeige raussuchen
-
-            var offerdata;
-
-            var options = {
-                host: 'localhost',
-				agent:false,
-                port: 3000,
-                path: '/offers/' + id,
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }
-
-            var externalRequest = http.request(options, function (externalResponse) {
-
-                externalResponse.on('data', function (chunk) {
-
-                    offerdata = JSON.parse(chunk);
-
-                    if (offerdata.success == false) {
-                        var error = new Error("anzeige Error:" + offerdata.error.message);
-                    }
-                    else {
-                        var error = null;
-                    }
-
-                    callback(error, offerdata);
-
-                });
-
-            });
-
-            externalRequest.end();
-
-        }],
-        function (error, offerdata) { // Main Funktion: Ergebnis rendern
-
-            if (error == null) {
-
-                var anzeige = JSON.parse(offerdata.success.offers);
-
-                res.render('pages/offers', {
-
-                    anzeige: anzeige,
-                });
-            }
-            else {
-                res.render('pages/offers', {
-
-                    anzeige: null,
-                    error: error
-                });
-            }
-        }
-    );
-});
-
-/* * * * * * * * * * * *
- * Delete offer by ID  *
- * * * * * * * * * * * */
-
-app.delete('/offers/:id([0-9]+)', function (req, res) {
-
-    var options = {
-        host: 'localhost',
-        port: 3000,
-        path: '/offers/' + req.params.id,
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    };
-    var externalRequest = http.request(options, function (externalResponse) {
-        externalResponse.on('data', function (chunk) {
-            res.json({ "success": true });
-        });
+		
+		externalRequest.end();
     });
 
-	client.publish('/messages', { text: 'An offer (ID:'+req.params.id+') was deleted' } )
-		.then(function(){
-			console.log('Message received by server');
-		}, function(error) {
-		console.log('There was an error publishing:' + error.message);
-	});
 
-    externalRequest.end();
-})
-
-/* * * * * * * * * * * *
- * Change Offers by ID *
- * * * * * * * * * * * */
-
-app.put('/offers/:id([0-9]+)', function (req, res) {
-
-    if (req.body.id 		!= null && req.body.id != "" 		&&
-		req.body.city 		!= null && req.body.city != "" 		&&
-		req.body.rent 		!= null && req.body.rent != "" 		&&
-		req.body.renttype 	!= null && req.body.renttype != "" 	&&
-		req.body.size		!= null && req.body.size != "" 		&&
-		req.body.roomqty 	!= null && req.body.roomqty != "") {
-
-        var options = {
-            host: 'localhost',
-            port: 3000,
-            path: '/offers/' + req.params.id,
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        };
-
-        var externalRequest = http.request(options, function (externalResponse) {
-
-            externalResponse.on('data', function (chunk) {
-
-                res.json({ success: true });
-            });
-        });
-
-        externalRequest.write(JSON.stringify({
-            "id": req.body.id,
-            "city": req.body.city,
-			"rent": req.body.rent,
-            "rentype": req.body.renttype,
-			"size": req.body.size,
-			"roomqty": req.body.roomqty
-        }));
-
-		client.publish('/messages', { text: 'An offer (ID:'+req.params.id+')was changed' } )
-			.then(function(){
-				console.log('Message received by server');
-			}, function(error) {
-			console.log('There was an error publishing:' + error.message);
-		});
-
-        externalRequest.end();
-    }
-    else {
-        // Display error message!
-        res.redirect('user?e=4');
-    }
-})
-
-/* * * * * * * * *  * * * * *
- *     List all offers 		*
- *   Query Parameter: city  *
- * * * * * * * * * *  * * * */
+/* * * * * * * * *  * * * * * *
+ *     List all offers 		  *
+ *   Query Parameter: search  *
+ * * * * * * * * * *  * * * * */
 
 app.get('/offers', function (req, res) {
 
@@ -456,20 +166,237 @@ app.get('/offers', function (req, res) {
 	}
 
     var externalRequest = http.request(options, function (externalResponse) {
-
         externalResponse.on('data', function (chunk) {
-
             var offerdata = JSON.parse(chunk);
-
-            res.render('../data/pages/offers', {
+            if (offerdata.error == false) {
+                var anzeigen = offerdata.success.offer;
+            }
+            else {
+                var anzeigen = [];
+            }
+            rres.render('../data/pages/offers', {
                 offers: offerdata.success.offers
             });
         });
     });
+    externalRequest.end();
+});
+    
+ 
+    
+    
+    
+    
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+/* * * * * * * * * * * 
+ * Get Offer per ID  *
+ * * * * * * * * * * */
+
+app.get('/offers/:id([0-9]+)', function (req, res) {
+
+    async.waterfall([
+		// Find specific offer
+        function (callback) { 
+
+            var id = req.params.id;
+            var options = {
+                host: 'localhost',
+                port: 3000,
+                path: '/offers/' + id,
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+
+            var externalRequest = http.request(options, function (externalResponse) {
+
+                externalResponse.on('data', function (chunk) {
+
+                    var offerdata = JSON.parse(chunk);
+
+                    if (offerdata.success == false) {
+                        var error = new Error("Offers Error:" + offerdata.error.message);
+                    }else {
+                        var error = null;
+                    }
+                    callback(error, offerdata);
+                });
+            });
+            externalRequest.end();
+        },
+		// Get all offers
+        function (offerdata, callback) { 
+
+            var options = {
+                host: 'localhost',
+                port: 3000,
+                path: '/offers',
+                method: 'GET',
+                headers: {
+                    accept: 'application/json'
+                }
+            }
+
+            var externalRequest = http.request(options, function (externalResponse) {
+
+                externalResponse.on('data', function (chunk) {
+
+                    var offers = JSON.parse(chunk);
+
+                    if (offers.success == false) {
+                        var error = new Error("Offers Error:" + offers.error.message);
+                    }else {
+                        var error = null;
+                    }
+
+                    callback(error, offerdata, offers.success.offers);
+                });
+            });
+
+            externalRequest.end();
+        }
+    ],
+		// Main function: Renders results
+        function (error, offer, city) { 
+
+            if (error == null) {
+
+                var offer = JSON.parse(offer.success.offer);
+
+                res.render('../data/pages/offers', {
+
+                    offer: offer,
+                    city: city
+
+                });
+            }else {
+                res.render('../data/pages/offers', {
+
+                    offer: null,
+                    city: null,
+                    error: error
+                });
+            }
+        }
+    ); 
+});
+
+/* * * * * * * * * * * *
+ * Delete Offer by ID  *
+ * * * * * * * * * * * */
+
+app.delete('/offers/:id([0-9]+)', function (req, res) {
+
+    var options = {
+        host: 'localhost',
+        port: 3000,
+        path: '/offers/' + req.params.id,
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+    var externalRequest = http.request(options, function (externalResponse) {
+        externalResponse.on('data', function (chunk) {
+            res.json({ "success": true });
+        });
+    });
+	
+	client.publish('/messages', { text: 'An offer (ID:'+req.params.id+') was deleted' } )
+		.then(function(){
+			console.log('Message received by server');
+		}, function(error) {
+		console.log('There was an error publishing:' + error.message);
+	});
+	
     externalRequest.end();
 });
 
+/* * * * * * * * * * * *
+ * Change Offers by ID *
+ * * * * * * * * * * * */
+
+app.put('/offers/:id([0-9]+)', function (req, res) {
+
+    if (req.body.id 		!= null && req.body.id != "" 		&& 
+		req.body.city 		!= null && req.body.city != "" 		&& 
+		req.body.rent 		!= null && req.body.rent != "" 		&& 
+		req.body.renttype 	!= null && req.body.renttype != "" 	&& 
+		req.body.size		!= null && req.body.size != "" 		&& 
+		req.body.roomqty 	!= null && req.body.roomqty != "") {
+				
+        var options = {
+            host: 'localhost',
+            port: 3000,
+            path: '/offers/' + req.params.id,
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+		
+        var externalRequest = http.request(options, function (externalResponse) {
+
+            externalResponse.on('data', function (chunk) {
+
+                res.json({ success: true });
+            });
+        });
+
+        externalRequest.write(JSON.stringify({
+            "id": req.body.id,
+            "city": req.body.city,
+			"rent": req.body.rent,
+            "rentype": req.body.renttype,
+			"size": req.body.size,
+			"roomqty": req.body.roomqty
+        }));
+		
+		client.publish('/messages', { text: 'An offer (ID:'+req.body.id+')was changed' } )
+			.then(function(){
+				console.log('Message received by server');
+			}, function(error) {
+			console.log('There was an error publishing:' + error.message);
+		});
+		
+        externalRequest.end();
+    }
+    else {
+        // Display error message!
+        res.redirect('user?e=4');
+    }
+});
+    
 /* * * * * * * * * *
  *  ConsoleScreen  *
  * * * * * * * * * */
