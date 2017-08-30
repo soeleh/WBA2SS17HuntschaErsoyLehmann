@@ -67,6 +67,46 @@ router.post('/:id/:city/:rent/:renttype/:size/:roomqty', function(req, res){
   }
 });
 
+router.put('/:id/:city/:rent/:renttype/:size/:roomqty', function(req, res){
+  var file = req.params;
+
+  var id = Number(file.id);
+  var city = file.city;
+  var rent = Number(file.rent);
+  var renttype = file.renttype;
+  var size = Number(file.size);
+  var roomqty = Number(file.roomqty);
+
+  offers.offers[id] = ({id: id, city: city, rent: rent, renttype: renttype, size: size, roomqty: roomqty});
+  var value = v.validate(offers.offers[id], offerScheme);
+  if(value.valid){
+    var newJson = JSON.stringify(offers, null, 2);
+    fs.writeFile('./data/testdata.json', newJson, finished);
+
+    function finished(err) {
+      console.log('Changed offer.');
+      var reply ={
+        id: id,
+        city: city,
+        rent: rent,
+        renttype: renttype,
+        size: size,
+        roomqty: roomqty,
+        success: true
+      }
+      res.send(reply);
+    }
+  }
+  else{
+    var reply = {
+      success: false,
+      message: "The JSON object is not valid!",
+      details: value.errors
+    }
+      res.status(400).send(reply);
+  }
+});
+
 //Delete offer
 router.delete('/:id', function(req, res){
   var id = Number(req.params.id);
